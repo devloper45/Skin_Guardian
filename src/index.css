@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none; /* Hide scrollbar on WebKit browsers */
+}
+
+/* Optional: If you want to hide scrollbar only for specific elements */
+.element-with-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+@layer base {
+  body {
+    /* @apply bg-[url('./assets/bgvector.png')] bg-contain bg-no-repeat ; */
+    @apply bg-[#000000];
+  }
+}
+
+@layer utilities {
+  /*  =================== sign up =================== */
+  .card {
+    @apply bg-[#213129] xsm:w-full md:w-[80%] lg:w-[45%] w-full px-5 m-auto mt-4 rounded-xl py-3;
+  }
+  .sign-in-tag {
+    @apply bg-white sm:p-3 p-2 rounded-xl flex justify-around items-center;
+  }
+  .sign-in-tag p {
+    @apply md:text-sm text-xs font-medium text-[#75A48C];
+  }
+  .input {
+    @apply bg-white rounded-xl sm:p-2 p-1 w-full my-2 outline-none text-black;
+  }
+  .tag-line {
+    @apply text-center md:text-sm text-xs py-2 font-medium text-[#75a48c] pb-4;
+  }
+  .tag-line2 {
+    @apply text-center text-xs md:text-lg py-2 font-medium text-black pb-4;
+  }
+  .btn {
+    @apply flex items-center justify-center m-auto sm:w-60 w-44 my-2 text-center bg-InputColor hover:bg-[#75a48c] p-2 rounded-xl text-white font-medium text-lg;
+  }
+  .border-b {
+    @apply border-b-2 w-20 md:w-28  mt-2 mb-2;
+  }
+  .error {
+    @apply text-red-600 text-sm;
+  }
+  .sidebarButton {
+    @apply block p-2 active:border active:border-white active:text-center hover:border hover:border-white hover:text-center rounded;
+  }
+  .gradient-border {
+    border-width: 2px;
+    border-radius: 10px;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, #ffffff, #0a1d49);
+    border-image-slice: 1;
+  }
+  .shadowb {
+    background: rgb(20, 34, 25);
+    background: radial-gradient(
+      circle,
+      rgba(20, 34, 25, 1) 0%,
+      rgba(21, 36, 26, 0.15),
+      rgba(53, 56, 53, 0.25)
+    );
+    /* filter: "blur(40px)";
+    border-radius: "100%"; */
+    @apply rounded-full blur-3xl -z-10;
+  }
+  .loader {
+    border: 3px solid #ffffff; /* Light grey */
+    border-top: 3px solid #18662f; /* Blue */
+    border-bottom: 3px solid #18662f;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    z-index: 20;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+::placeholder {
+  font-weight: 600;
+  color: #31295e;
+  padding-left: 5px;
+}
+
+.loading-text {
+  display: inline-block;
+  position: relative;
+  /*font-weight: bold;  Example: bold text */
+  /* color: #ffffff; Example: orange text color */
+}
+
+.loading-dots {
+  display: inline-block;
+  margin-left: 5px; /* Add a small margin to separate from text */
+}
+
+.loading-dots span {
+  display: inline-block;
+  font-size: 1.5rem;
+  color: #ffffff;
+  /* color: black; */
+  animation: dots 1s steps(5, end) infinite;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dots {
+  0%,
+  10% {
+    color: black;
+  }
+  20%,
+  100% {
+    color: white;
+  }
+}
+/* global.css or another CSS file */
+@keyframes moveDown {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(20px); /* Adjust the value as needed */
+  }
+}
+
+.animated-move-down {
+  animation: moveDown 1s infinite alternate; /* 1s duration, infinite loop, alternate direction */
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  from {
+    border-right-color: rgba(255, 255, 255, 0.75);
+  }
+  to {
+    border-right-color: transparent;
+  }
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+  animation: typing 4s steps(40, end) infinite alternate, blink 0.75s infinite;
+}
