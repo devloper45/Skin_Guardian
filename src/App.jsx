@@ -7,18 +7,21 @@ import Resetpassword from "./Components/Accounts/Resetpassword";
 
 import Protect from "./Components/ProtectRoute/Protect";
 import LandingPage from "./Components/LandingPage";
-import CustomReport from "./Components/premiumUser/customReport.jsx";
+import CustomReport from "./Components/Docter/customReport.jsx";
 import Pricing from "./Components/Pricing";
 import Product from "./Components/Product";
 
 import { UserProvider } from "./context/contextApi.jsx";
-import UploadFile from "./Components/FreeUser/UploadFile.jsx";
+import UploadFile from "./Components/NormalUser/UploadOrTakeImage.jsx";
 import UploadFileTemplate from "./Components/UploadFileTemplate.jsx";
-import PReportTemplate from "./Components/premiumUser/PReportTemplate.jsx";
-import PReportTemplateOption from "./Components/premiumUser/PReportTemplateOption.jsx";
-import PUploadFile from "./Components/premiumUser/PUploadFile.jsx";
+import PReportTemplate from "./Components/Docter/PReportTemplate.jsx";
+import PReportTemplateOption from "./Components/Docter/PReportTemplateOption.jsx";
+import PUploadFile from "./Components/Docter/PUploadFile.jsx";
 import Auth from "./Components/ProtectRoute/auth.jsx";
-// import PReportTemplateOption from "./Components/premiumUser/PReportTemplateOption.jsx"
+import ConsultDermatologist from "./Components/NormalUser/ConsultDermatologist.jsx";
+import ConsultCancerSpecialist from "./Components/NormalUser/ConsultCancerSpecialist.jsx";
+import UploadOrTakeImage from "./Components/NormalUser/UploadOrTakeImage.jsx";
+// import PReportTemplateOption from "./Components/Docter/PReportTemplateOption.jsx"
 // import Main from "./Components/customReport"
 
 function App() {
@@ -28,7 +31,6 @@ function App() {
       <UserProvider>
         <Router>
           <Routes>
-            {/* <Route path='/main' element={ </>}/> */}
             <Route path="/Login" element={<Login />} />
             <Route
               path="/Dashboard"
@@ -68,6 +70,22 @@ function App() {
                 </Protect>
               }
             />
+            <Route
+              path="/ConsultDermatologist"
+              element={
+                <Protect>
+                  <ConsultDermatologist />
+                </Protect>
+              }
+            />
+            <Route
+              path="/ConsultCancerDocter"
+              element={
+                <Protect>
+                  <ConsultCancerSpecialist />
+                </Protect>
+              }
+            />
             <Route path="/Pricing" element={<Pricing />} />
             <Route
               path="/P/:id"
@@ -83,25 +101,16 @@ function App() {
             <Route path="/Product" element={<Product />} />
             <Route path="/SignUp" element={<SignUp />} />
             <Route
-              path="/UploadFile/:id"
+              path="/UploadOrTakeImage"
               element={
                 <Protect>
-                  <UploadFile />
+                  <UploadOrTakeImage />
                 </Protect>
               }
             />
-            {/* <Route
-              path="/ChangePassword"
-              element={
-                <Protect>
-                  <UploadFile />
-                </Protect>
-              }
-            /> */}
+         
             <Route path="/forgot-password" element={<Forgotpassword />} />
-            {/* <Route path="/subscribe" element={<Subscribe />} /> */}
-            {/* <Route path='/otp' element={ <Otp length={6} onComplete={handleComplete} />}/> */}
-            <Route path="/reset-password" element={<Resetpassword />} />
+               <Route path="/reset-password" element={<Resetpassword />} />
           </Routes>
         </Router>
       </UserProvider>
