@@ -35,10 +35,10 @@ function App() {
             <Route
               path="/Dashboard"
               element={
-                <Protect>
-                  {" "}
+                // <Protect>
+                  // {" "}
                   <Dashboard />
-                </Protect>
+                // </Protect>
               }
             />
             <Route path="/" element={<LandingPage />} />
@@ -46,55 +46,55 @@ function App() {
             <Route
               path="/CustomReportTemplate"
               element={
-                <Protect>
+                // <Protect>
                   <PReportTemplateOption />
-                </Protect>
+                // </Protect>
               }
               required
             />
             <Route
               path="/PReportTemplate/:id"
               element={
-                <Protect>
-                  <Auth>
+                // <Protect>
+                  // <Auth>
                     <PReportTemplate />
-                  </Auth>
-                </Protect>
+                  // </Auth>
+                // </Protect>/
               }
             />
             <Route
               path="/CustomReport"
               element={
-                <Protect>
+                // <Protect>
                   <CustomReport />
-                </Protect>
+                // </Protect>
               }
             />
             <Route
               path="/ConsultDermatologist"
               element={
-                <Protect>
+                // <Protect>
                   <ConsultDermatologist />
-                </Protect>
+                // </Protect>
               }
             />
             <Route
               path="/ConsultCancerDocter"
               element={
-                <Protect>
+                // <Protect>
                   <ConsultCancerSpecialist />
-                </Protect>
+                // </Protect>
               }
             />
             <Route path="/Pricing" element={<Pricing />} />
             <Route
               path="/P/:id"
               element={
-                <Protect>
-                  <Auth>
+                // <Protect>
+                  // <Auth>
                     <PUploadFile />
-                  </Auth>
-                </Protect>
+                  // {/* </Auth> */}
+                // {/* </Protect> */}
               }
             />
 
@@ -103,9 +103,9 @@ function App() {
             <Route
               path="/UploadOrTakeImage"
               element={
-                <Protect>
+                // <Protect>
                   <UploadOrTakeImage />
-                </Protect>
+                // </Protect>
               }
             />
          

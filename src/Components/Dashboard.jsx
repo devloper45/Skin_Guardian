@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SideBarrr from "./SideBarrr";
 import { UserContext } from "../context/contextApi";
-import Dashboardbg from "../assets/dashboardbg.png";
+import Dashboardbg from "../assets/bg.avif";
 import logo from "../assets/logo.png";
 
 export default function Dashboard() {
@@ -14,19 +14,19 @@ export default function Dashboard() {
     {
       id: 1,
       name: "Consult Dermatologist",
-      description: "This bot will help you with your finance-related issues",
+      description: "Take Consultation from Professional Dermatologist regarding your Skkin Wellness",
       path: "/ConsultDermatologist",
     },
     {
       id: 2,
       name: "Take or Upload Image",
-      description: "This bot will help you with your insurance-related issues",
+      description: "Upload your image in order to analyze weather you have Chance of Skin Cancer or not",
       path: "/UploadOrTakeImage",
     },
     {
       id: 3,
       name: "Consult Cancer Specialist ",
-      description: "This bot will help you with general issues",
+      description: "Take Consultation from Professional Cancer Specialist regarding your Skin Wellness",
       path: "/ConsultCancerDocter",
     },
   ];
@@ -71,13 +71,14 @@ export default function Dashboard() {
     <div>
       <div className="flex  overflow-hidden text-White w-full">
         <SideBarrr openBar={openBar} setOpenBar={setOpenBar} />
-        <div className="shadowb absolute top-14   h-[90vh] w-full "></div>
+        {/* <div className="shadowb absolute top-14   h-[90vh] w-full "></div>
         <div
           className=" hidden md:block absolute bg-center bg-cover bg-no-repeat min-h-screen right-0 -z-20 mr-auto   w-5/12"
           style={{
             backgroundImage: `url(${Dashboardbg})`,
           }}
-        ></div>
+        ></div> */}
+      
 
         <div
           className={`flex overflow-auto w-full sha transition-all duration-300 ${
@@ -88,24 +89,27 @@ export default function Dashboard() {
             <div className="w-[100vw]  fixed h-full  top-0 bg-black bg-opacity-75 md:hidden "></div>
           )}
 
-          <div className="bg-background text-White min-h-screen w-full flex flex-col items-start p-6">
+          <div className="bg-background text-White  flex flex-col items-start p-6  bg-center bg-cover bg-no-repeat min-h-screen w-full"
+          style={{
+            backgroundImage: `url(${Dashboardbg})`,
+          }}>
             <div onClick={() => navigate("/Dashboard")} className="flex ">
               <img src={logo} className="h-7 w-7 m-2" alt="Logo" />
-              <h1 className="font-bold text-base sm:text-2xl text-white m-1">
+              <h1 className="font-bold text-base sm:text-2xl text-White m-1">
                 Skin-Guardian
               </h1>
             </div>
 
             <div className=" my-10 mx-5 sm:mx-8 sm:my-20 sm:mt-24">
               <h2 className=" text-[2.2rem] font-bold md:text-[3.5rem] tracking-[0.65rem] md:font-semibold mb-3">
-                Expert
-                <span> financial</span>
+              Your AI 
+                
               </h2>
               <h2 className=" text-[2.2rem] font-bold md:text-[3.5rem] tracking-[0.65rem] md:font-semibold mb-3">
-                guidance,
+              Guide to
               </h2>
               <h2 className=" text-[2.2rem] font-bold md:text-[3.5rem] tracking-[0.65rem] md:font-semibold mb-3">
-                interactively. {userRole}
+               Skin Wellness. 
               </h2>
               {userRole === true ? (
                 <button
@@ -143,7 +147,7 @@ export default function Dashboard() {
                 <div
                   key={item.id}
                   onClick={() => handleTemplate(item.path)}
-                  className="mx-2 p-6 flex  bg-[#9aa19e] rounded-lg shadow-lg"
+                  className="mx-2 p-6 flex  bg-[#77ccee] rounded-lg shadow-lg"
                 >
                   <div className=" ">
                     <h3 className=" text-lg sm:text-xl font-semibold mb-2">

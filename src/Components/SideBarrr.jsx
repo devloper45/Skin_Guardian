@@ -104,39 +104,6 @@ export default function SideBarrr({ openBar, setOpenBar }) {
     },
   ];
 
-  // const handleLogout = async () => {
-  //   const refresh = localStorage.getItem("refresh");
-
-  //   if (!refresh) {
-  //     alert("No refresh token found");
-  //     return;
-  //   }
-
-  //   localStorage.clear();
-
-  //   try {
-  //     const response = await fetch("http://127.0.0.1:8000/logout/", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ refresh_token: refresh }),
-  //     });
-
-  //     if (!response.ok) {
-  //       alert("Unable to logout");
-  //     } else {
-  //       const data = await response.json();
-  //       console.log(data);
-  //       toast.success("Logout successful");
-  //     }
-  //   } catch (error) {
-  //     console.log("Error:", error);
-  //   }
-
-  //   window.location.href = "/Login";
-  // };
-
   const handleNavClick = (path) => {
     console.log(userRole);
     console.log("Checking the condition here ", path);
@@ -290,10 +257,10 @@ export default function SideBarrr({ openBar, setOpenBar }) {
 
           {openBar && (
             <div>
-              <div className="h-[100vh] md:w-[11rem] bg-[#213129] rounded-r-2xl text-white p-4">
+              <div className="h-[100vh] md:w-[11rem] bg-InputColor rounded-r-2xl text-white p-4">
                 <div
                   onClick={() => navigate("/Dashboard")}
-                  className=" cursor-pointer flex bg-[#213129] bg-opacity-40 shadow-xl px-2 pr-4 rounded-full"
+                  className=" cursor-pointer flex bg-InputColor bg-opacity-40 shadow-xl px-2 pr-4 rounded-full"
                 >
                   <img src={Logo} alt="" className="my-2 mx-1 h-8 w-8" />
                   <h2 className="text-xl  font-bold my-2">Skin-Guardian</h2>
@@ -312,7 +279,7 @@ export default function SideBarrr({ openBar, setOpenBar }) {
                         type="button"
                       >
                         <div className="flex mt-1 hover:border-white ">
-                          <div className="bg-[#75A48C] rounded-full p-1">
+                          <div className="bg-InputColorHover rounded-full p-1">
                             {icon}
                           </div>
                           <span className="mx-1 text-[10px] my-0 p-1">

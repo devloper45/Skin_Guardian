@@ -25,7 +25,8 @@ export default {
       },
       colors: {
         primaryColor: "#eb456a",
-        InputColor: "#33463D",
+        InputColor: "#0066FF",
+        InputColorHover: "#5998f7",
         White: "#000000",
       },
       boxShadow: {

@@ -1,432 +1,295 @@
-import React, { useState, useRef, useEffect } from "react";
-import document from "../../assets/document.png";
-import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
-import SideBarrr from "../SideBarrr";
-import Api from "../ProtectRoute/Api";
+import React, { useState, useRef, useCallback } from "react";
+import Webcam from "react-webcam";
 
-const UploadOrTakeImage = () => {
-  const [file, setFile] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [ModifiedFileName, setModifiedFileName] = useState("");
-  const [openBar, setOpenBar] = useState(false);
-  const [imageSrc, setImageSrc] = useState(null); // For displaying captured image
-  useEffect(() => {
-    // Code that should only run in the browser
-    if (typeof document !== "undefined") {
-      // Example of browser-specific code, e.g., accessing the camera
-      console.log("Running in the browser environment!");
-    }
-  }, []);
+export default function UploadOrTakeImage() {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [image, setImage] = useState(null);
+  const [isTakingPhoto, setIsTakingPhoto] = useState(false);
+  const webcamRef = useRef(null);
 
-  const fileInputRef = useRef(null);
-  const id = useParams();
-
-  const handleFileChange = async (e) => {
-    let selectedFile = e.target.files[0];
-    if (!selectedFile) return toast.error("Failed to upload Image");
-
-    const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
-
-    if (!allowedTypes.includes(selectedFile.type)) {
-      toast.error("Only JPEG, PNG, and GIF image files are allowed.");
-      return;
-    }
-
-    const userId = localStorage.getItem("userId");
-
-    setFile(selectedFile);
-    let newModifiedFileName = selectedFile.name.replace(/[_.,]/g, "-");
-    newModifiedFileName = newModifiedFileName.toLowerCase();
-    setModifiedFileName(newModifiedFileName);
-
-    toast.success("Image uploaded successfully.");
-    localStorage.setItem("document_name", newModifiedFileName);
-    setImageSrc(URL.createObjectURL(selectedFile)); // Display the uploaded image
+  const videoConstraints = {
+    width: 1920,
+    height: 1080,
+    facingMode: "user"
   };
 
-  const handleCameraImage = () => {
-    if (typeof document !== "undefined") {
-      navigator.mediaDevices
-        .getUserMedia({ video: { width: 4000, height: 3000 } })
-        .then((stream) => {
-          const video = document.createElement("video");
-          video.srcObject = stream;
-          video.play();
+  const capture = useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    if (imageSrc) {
+      const imageObject = new Image();
+      imageObject.onload = function () {
+        const width = imageObject.width;
+        const height = imageObject.height;
+        const megapixels = (width * height) / 1000000;
 
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
-
-          video.onloadedmetadata = () => {
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-
-            // Draw video frame to canvas
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            stream.getTracks().forEach((track) => track.stop()); // Stop the video stream
-
-            // Check resolution (12 MP = 4000 x 3000)
-            if (canvas.width * canvas.height < 12000000) {
-              toast.error(
-                "Captured image is less than 12 MP. Please try again."
-              );
-              return;
-            }
-
-            // Convert canvas to blob for image preview and upload
-            canvas.toBlob((blob) => {
-              const capturedImage = new File([blob], "captured-image.jpg", {
-                type: "image/jpeg",
-              });
-              setFile(capturedImage);
-              setImageSrc(URL.createObjectURL(capturedImage));
-            }, "image/jpeg");
-          };
-        })
-        .catch((error) => {
-          console.error("Error accessing camera: ", error);
-          toast.error("Failed to access the camera.");
-        });
+        if (megapixels >= 12) {
+          setImage(imageSrc);
+          picToBackend(imageSrc);
+        } else {
+          setErrorMessage("Image must be at least 12 megapixels.");
+          setImage(null);
+        }
+      };
+      imageObject.src = imageSrc;
     }
-  };
+  }, [webcamRef]);
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFileChange({ target: { files: e.dataTransfer.files } });
-      e.dataTransfer.clearData();
-    }
-  };
+  function handleTakePhoto() {
+    setIsTakingPhoto(true);
+  }
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
+  function handleUpload() {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/*";
+    fileInput.onchange = handleFileSelection;
+    fileInput.click();
+  }
 
-  const handleAnalyze = async () => {
-    if (!file) {
-      toast("Please upload or capture an image first.");
-      return;
-    }
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("file", file);
+  async function handleFileSelection(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
+    const imageObject = new Image();
+    imageObject.onload = function () {
+      const width = imageObject.width;
+      const height = imageObject.height;
+      const megapixels = (width * height) / 1000000;
+
+      if (megapixels >= 12) {
+        setImage(URL.createObjectURL(file));
+        picToBackend(file);
+      } else {
+        setErrorMessage("Image must be at least 12 megapixels.");
+        setImage(null);
+      }
+    };
+    imageObject.src = URL.createObjectURL(file);
+  }
+
+  async function picToBackend(imageFile) {
     try {
-      const response = await Api.post("/summarize-pdf/", formData);
-      const data = response.data.summary;
-      console.log("data is here " + data);
-      setSummary(data);
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred while analyzing the file.");
-    } finally {
-      setLoading(false);
-    }
-  };
+      const formData = new FormData();
+      formData.append("image", imageFile);
 
-  const clearFileHandler = () => {
-    setFile(null);
-    setImageSrc(null); // Clear image preview
-    setSummary("");
-    localStorage.removeItem("document_name");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      const response = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setErrorMessage("");
+        alert("Image uploaded successfully!");
+      } else {
+        setErrorMessage("Failed to upload image.");
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred while uploading.");
     }
-  };
+  }
 
   return (
-    <div className="flex min-h-screen text-black">
-      <div className="flex overflow-hidden w-full">
-        <SideBarrr openBar={openBar} setOpenBar={setOpenBar} />
+    <div className="flex justify-center items-center min-h-screen bg-[#ffffff]">
+      <div className="flex h-[500px] w-[500px] bg-[#c0e2c2] border rounded-3xl relative p-6">
         <div
-          className={`flex-1 overflow-auto w-full transition-all duration-300 ${
-            openBar ? "ml-48" : "ml-10"
-          }`}
+          className="absolute top-2 right-2 hover:cursor-pointer"
+          onClick={() => {
+            setImage(null);
+            setIsTakingPhoto(false);
+          }}
         >
-          <div className="sm:mb-16 md:mb-10 lg:mb-1 p-4 text-White py-6 justify-center">
-            <div className="flex flex-col items-center m-3 text-center">
-              <h1 className="bold text-4xl m-3">Skin Guardian</h1>
-              <p className="text-xl">Upload or Capture your Image</p>
-              <p className="mb-10">
-                Get your image analyzed and get help from your own Personal AI
-                Assistant
-              </p>
-            </div>
-            <div className="flex justify-center mb-4 sm:mb-0">
-              <div
-                className="flex bg-inherit shadow-lg w-3/4 border-dashed border-2 border-White items-center p-10 flex-col px-20 justify-center h-52 sm:h-auto text-gray-300 rounded"
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-              >
-                <input
-                  className="hidden"
-                  type="file"
-                  accept=".jpg,.jpeg,.png,.gif"
-                  name="file"
-                  id="imageupload"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                />
-
-                <p className="py-2 text-White sm:text-3xl text-base my-2 font-semibold px-4">
-                  Drop your image here!
-                </p>
-                {imageSrc && (
-                  <div className="mt-2 flex imagggge">
-                    <img
-                      src={imageSrc}
-                      alt="Preview"
-                      className="mt-2 text-White rounded-lg h-[40px] w-[40px]"
-                    />
-                    <svg
-                      onClick={clearFileHandler}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      fill="#ffffff"
-                      className="bi bi-x text-lg cursor-pointer"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                    </svg>
-                  </div>
-                )}
-                <div className="flex justify-center">
-                  <label
-                    htmlFor="imageupload"
-                    className="text-White mx-12 relative mt-12 px-7 mb-[-59px] bg-[#75A48C] p-2 justify-center text-sm sm:text-base"
-                  >
-                    Upload Image
-                  </label>
-                  <button
-                    onClick={handleCameraImage}
-                    className="text-White mx-12 m-5 bg-[#75A48C] hover:bg-[#618673] p-2 px-4 rounded-full text-sm sm:text-base"
-                  >
-                    Take Image
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <button
-              onClick={handleCameraImage}
-              className="text-White mx-12 m-5 bg-[#75A48C] hover:bg-[#618673] p-2 px-4 rounded-full text-sm sm:text-base"
-            >
-              Take Image
-            </button>
-          </div>
-          <div className="flex justify-center">
-            <button
-              onClick={handleAnalyze}
-              className="text-White mx-12 m-5 bg-[#75A48C] hover:bg-[#618673] p-2 px-4 rounded-full text-sm sm:text-base"
-            >
-              Analyze
-            </button>
-          </div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </div>
+        <div className="flex flex-col justify-center items-center w-full">
+          {isTakingPhoto ? (
+            <>
+              <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                videoConstraints={videoConstraints}
+              />
+              <button className="btn mt-4" onClick={capture}>
+                Capture
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="btn mb-4" onClick={handleTakePhoto}>
+                Take Image
+              </button>
+              <button className="btn mb-4" onClick={handleUpload}>
+                Upload Image
+              </button>
+            </>
+          )}
+          {errorMessage && (
+            <p className="text-red-500 mt-2">{errorMessage}</p>
+          )}
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default UploadOrTakeImage;
 
-// import React, { useState, useRef } from "react";
-// import document from "../../assets/document.png";
-// import toast from "react-hot-toast";
-// import { useParams } from "react-router-dom";
-// import SideBarrr from "../SideBarrr";
-// import Api from "../ProtectRoute/Api";
 
-// const UploadOrTakeImage = () => {
-//   const [file, setFile] = useState(null);
-//   const [loading, setLoading] = useState(false);
-//   const [ModifiedFileName, setModifiedFileName] = useState("");
-//   const [openBar, setOpenBar] = useState(false);
+// import React, { useState } from "react";
 
-//   const fileInputRef = useRef(null);
-//   const id = useParams();
-//   console.log(id);
+// export default function UploadOrTakeImage() {
+//   const [errorMessage, setErrorMessage] = useState("");
+//   const [image, setImage] = useState(null);
 
-//   const handleFileChange = async (e) => {
-//     let selectedFile = e.target.files[0];
-//     if (!selectedFile) return toast.error("Failed to upload Image");
+//   function handleTakePhoto() {
+//     // Trigger the camera input
+//     const fileInput = document.createElement("input");
+//     fileInput.type = "file";
+//     fileInput.accept = "image/*";
+//     fileInput.capture = "environment"; // This uses the back camera
+//     fileInput.onchange = handleFileSelection;
+//     fileInput.click();
+//   }
 
-//     const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
+//   function handleUpload() {
+//     // Trigger the file input for upload
+//     const fileInput = document.createElement("input");
+//     fileInput.type = "file";
+//     fileInput.accept = "image/*";
+//     fileInput.onchange = handleFileSelection;
+//     fileInput.click();
+//   }
 
-//     if (!allowedTypes.includes(selectedFile.type)) {
-//       toast.error("Only JPEG, PNG, and GIF image files are allowed.");
-//       return;
-//     }
+//   async function handleFileSelection(event) {
+//     const file = event.target.files[0];
+//     if (!file) return;
 
-//     const userId = localStorage.getItem("userId");
+//     // Validate image resolution
+//     const imageObject = new Image();
+//     imageObject.onload = function () {
+//       const width = imageObject.width;
+//       const height = imageObject.height;
+//       const megapixels = (width * height) / 1000000;
 
-//     setFile(selectedFile);
-//     let newModifiedFileName = selectedFile.name.replace(/[_.,]/g, "-");
-//     newModifiedFileName = newModifiedFileName.toLowerCase();
-//     setModifiedFileName(newModifiedFileName);
+//       if (megapixels >= 12) {
+//         setImage(file);
+//         picToBackend(file);
+//       } else {
+//         setErrorMessage("Image must be at least 12 megapixels.");
+//         setImage(null);
+//       }
+//     };
+//     imageObject.src = URL.createObjectURL(file);
+//   }
 
-//     toast.success("File uploaded successfully.");
-//     localStorage.setItem("document_name", newModifiedFileName);
-//     console.log(selectedFile);
-
-//     const formData = new FormData();
-//     formData.append("file", selectedFile);
-//     formData.append("user_id", userId);
-//     formData.append("document_name", newModifiedFileName);
-
+//   async function picToBackend(imageFile) {
 //     try {
-//       const response = await Api.post("/query-document/", formData);
+//       const formData = new FormData();
+//       formData.append("image", imageFile);
 
-//       if (!response.ok) {
-//         console.log("error in embedding queryselector");
-//         }
+//       const response = await fetch("/api/upload-image", {
+//         method: "POST",
+//         body: formData,
+//       });
+
+//       if (response.ok) {
+//         setErrorMessage("");
+//         alert("Image uploaded successfully!");
+//       } else {
+//         setErrorMessage("Failed to upload image.");
+//       }
 //     } catch (error) {
-//       console.error("Error:", error);
-//       toast.error("An error occurred while uploading the file.");
+//       setErrorMessage("An error occurred while uploading.");
 //     }
-//   };
-//   function handleCameraImage() {}
-
-//   const handleDrop = (e) => {
-//     e.preventDefault();
-//     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-//       handleFileChange({ target: { files: e.dataTransfer.files } });
-//       e.dataTransfer.clearData();
-//     }
-//   };
-
-//   const handleDragOver = (e) => {
-//     e.preventDefault();
-//   };
-
-//   const handleAnalyze = async () => {
-//     if (!file) {
-//       toast("Please upload a file first.");
-//       return;
-//     }
-//     setLoading(true);
-//     const formData = new FormData();
-//     formData.append("file", file);
-
-//     try {
-//       const response = await Api.post("/summarize-pdf/", formData);
-//       console.log("no response");
-//       console.log(response.data.summary);
-//       const data = response.data.summary;
-//       console.log("data is here " + data);
-//       setSummary(data);
-//     } catch (error) {
-//       console.error("Error:", error);
-//       alert("An error occurred while analyzing the file.");
-//     } finally {
-//       setLoading(false); // End loading
-//     }
-//   };
-
-//   const clearFileHandler = () => {
-//     setFile(null);
-
-//     setSummary("");
-//     localStorage.removeItem("document_name");
-//     if (fileInputRef.current) {
-//       fileInputRef.current.value = "";
-//     }
-//   };
+//   }
 
 //   return (
-//     <div
-//       className=" flex min-h-screen   text-black"
-
-//     >
-//       <div className="flex  overflow-hidden w-full">
-//         <SideBarrr openBar={openBar} setOpenBar={setOpenBar} />
+//     <div className="flex justify-center items-center min-h-screen">
+//       <div className="flex h-[500px] w-[500px] border rounded-3xl relative p-6">
 //         <div
-//           className={`flex-1 overflow-auto w-full transition-all duration-300 ${
-//             openBar ? "ml-48" : "ml-10"
-//           }`}
+//           className="absolute top-2 right-2 hover:cursor-pointer"
+//           onClick={() => setImage(null)}
 //         >
-//           <div className="sm:mb-16 md:mb-10 lg:mb-1   p-4 py-6 justify-center">
-//             <div className="flex flex-col items-center m-3 text-center">
-//               <h1 className="bold text-4xl m-3">Skin Guardian </h1>
-
-//               <p className="text-xl">Upload your Document </p>
-//               <p className="mb-10">
-//                 Get your financial Summary and get help from your own Personal
-//                 AI Assistant{" "}
-//               </p>
-//             </div>
-//             <div className="flex justify-center  mb-4 sm:mb-0">
-//               <div
-//                 className="flex  bg-inherit shadow-lg w-3/4 border-dashed border-2 border-white items-center p-10 flex-col px-20 justify-center h-52 sm:h-auto  text-gray-300 rounded"
-//                 onDrop={handleDrop}
-//                 onDragOver={handleDragOver}
-//               >
-//                 <input
-//                   className="hidden"
-//                   type="file"
-//                   accept=".jpg,.jpeg,.png,.gif"
-//                   name="file"
-//                   id="imageupload"
-//                   ref={fileInputRef}
-//                   onChange={handleFileChange}
-//                 />
-
-//                 <p className="py-2 text-white sm:text-3xl text-base my-2 font-semibold px-4">
-//                   Drop your image here!
-//                 </p>
-//                 {file && (
-//                   <div className="mt-2 flex">
-//                     <p className="text-sm text-white pt-4">{file.name}</p>
-//                     <img
-//                       src={document}
-//                       alt="Preview"
-//                       className="mt-2 text-white rounded-lg h-[40px] w-[40px]"
-//                     />
-//                     <svg
-//                       onClick={clearFileHandler}
-//                       xmlns="http://www.w3.org/2000/svg"
-//                       width="20"
-//                       height="20"
-//                       fill="#ffffff"
-//                       className="bi bi-x text-lg cursor-pointer"
-//                       viewBox="0 0 16 16"
-//                     >
-//                       <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-//                     </svg>
-//                   </div>
-//                 )}
-//                 <label
-//                   htmlFor="imageupload"
-//                   className="text-white mx-12 relative mt-12 px-7 mb-[-59px] bg-[#75A48C]  p-2 justify-center  text-sm sm:text-base"
-//                 >
-//                   Upload Image
-//                 </label>
-//               </div>
-//             </div>
-//           </div>
-//           <div className="flex justify-center">
-//             <button
-//               onClick={handleCameraImage}
-//               className="text-white mx-12 m-5 bg-[#75A48C] hover:bg-[#618673] p-2 px-4 rounded-full text-sm sm:text-base"
-//             >
-//               Take Image
-//             </button>
-//           </div>
-//           <div className="flex justify-center">
-//             <button
-//               onClick={handleAnalyze}
-//               className="text-white mx-12 m-5 bg-[#75A48C] hover:bg-[#618673] p-2 px-4 rounded-full text-sm sm:text-base"
-//             >
-//               Analyze
-//             </button>
-//           </div>
+//           <svg
+//             xmlns="http://www.w3.org/2000/svg"
+//             viewBox="0 0 24 24"
+//             fill="currentColor"
+//             className="w-6 h-6"
+//           >
+//             <path
+//               fillRule="evenodd"
+//               d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+//               clipRule="evenodd"
+//             />
+//           </svg>
+//         </div>
+//         <div className="flex flex-col justify-center items-center w-full">
+//           <button className="btn mb-4" onClick={handleTakePhoto}>
+//             Take Image
+//           </button>
+//           <button className="btn mb-4" onClick={handleUpload}>
+//             Upload Image
+//           </button>
+//           {errorMessage && (
+//             <p className="text-red-500 mt-2">{errorMessage}</p>
+//           )}
 //         </div>
 //       </div>
-
 //     </div>
 //   );
-// };
+// }
 
-// export default UploadOrTakeImage;
+// --------------------------------------------
+
+// import React from "react";
+
+// export default function UploadOrTakeImage() {
+
+
+//   function handleTakePhoto(){
+//     picToBackend()
+
+//   }
+//   function handleUpload(){
+    
+//     picToBackend();
+//   }
+//   async function picToBackend(){
+//     // Api call 
+//   }
+//   return (
+//     <div className="flex justify-center items-center min-h-screen">
+//       <div className=" flex h-[500px] w-[500px] border rounded-3xl" >
+//         <div className=" relative right-0  m-2 hover:cursor-pointer">
+//           <svg
+//             xmlns="http://www.w3.org/2000/svg"
+//             viewBox="0 0 24 24"
+//             fill="currentColor"
+//             class="size-6"
+//           >
+//             <path
+//               fill-rule="evenodd"
+//               d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+//               clip-rule="evenodd"
+//             />
+//           </svg>
+//         </div>
+//         <div className="flex flex-col justify-center items-center">
+//           <button className="btn" onClick={handleTakePhoto}>Take Image</button>
+//           <button className="btn" onClick={handleUpload}>Upload Image</button>
+//           <input type="hidden" name="" />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
