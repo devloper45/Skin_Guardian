@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import SideBarrr from "./SideBarrr";
 import { UserContext } from "../context/contextApi";
 import Dashboardbg from "../assets/bg.avif";
-import logo from "../assets/logo.png";
+// import logo from "../assets/logo.png";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -94,7 +94,7 @@ export default function Dashboard() {
             backgroundImage: `url(${Dashboardbg})`,
           }}>
             <div onClick={() => navigate("/Dashboard")} className="flex ">
-              <img src={logo} className="h-7 w-7 m-2" alt="Logo" />
+              {/* <img src={logo} className="h-7 w-7 m-2" alt="Logo" /> */}
               <h1 className="font-bold text-base sm:text-2xl text-White m-1">
                 Skin-Guardian
               </h1>

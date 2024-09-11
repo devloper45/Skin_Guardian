@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 const Api = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "https://fyp-backend.adaptable.app/v1/api",
 });
 
 export default Api;

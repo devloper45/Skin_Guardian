@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
+import Api from "../ProtectRoute/Api";
 
 export default function UploadOrTakeImage() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -72,10 +73,7 @@ export default function UploadOrTakeImage() {
       const formData = new FormData();
       formData.append("image", imageFile);
 
-      const response = await fetch("/api/upload-image", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await Api.post("/user/image",formData);
 
       if (response.ok) {
         setErrorMessage("");
@@ -90,7 +88,7 @@ export default function UploadOrTakeImage() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-[#ffffff]">
-      <div className="flex h-[500px] w-[500px] bg-[#c0e2c2] border rounded-3xl relative p-6">
+      <div className="flex h-[500px] w-[500px] bg-[#77ccee] border rounded-3xl relative p-6">
         <div
           className="absolute top-2 right-2 hover:cursor-pointer"
           onClick={() => {

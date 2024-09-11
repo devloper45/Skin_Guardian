@@ -4,7 +4,7 @@ import {
   LockClosedIcon,
   UserCircleIcon,
 } from "@heroicons/react/16/solid";
-import Logo from "../assets/logo.png";
+// import Logo from "../assets/logo.png";
 import { UserContext } from "../context/contextApi";
 import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -262,8 +262,8 @@ export default function SideBarrr({ openBar, setOpenBar }) {
                   onClick={() => navigate("/Dashboard")}
                   className=" cursor-pointer flex bg-InputColor bg-opacity-40 shadow-xl px-2 pr-4 rounded-full"
                 >
-                  <img src={Logo} alt="" className="my-2 mx-1 h-8 w-8" />
-                  <h2 className="text-xl  font-bold my-2">Skin-Guardian</h2>
+                  {/* <img src={Logo} alt="" className="my-2 mx-1 h-8 w-8" /> */}
+                  <h2 className="text-base  font-bold my-2">Skin-Guardian</h2>
                 </div>
                 <ul className="space-y-2 my-4">
                   {NavBarData.map(({ name, stateKey, icon, path }) => (

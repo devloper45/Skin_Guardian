@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { UserContext } from "../../context/contextApi";
 import GoogleAuth from "./GoogleAuth";
 import MicrosoftAuth from "./MicrosoftAuth";
+import OptionBG from "../../assets/bg.avif";
 
 function Login() {
   // const [user, setUser] = useState({});
@@ -24,7 +25,7 @@ function Login() {
 
   const LoginHandler = async () => {
     try {
-      const response = await fetch("http://localhost:8000/login/", {
+      const response = await fetch("https://fyp-backend.adaptable.app/v1/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,19 +38,19 @@ function Login() {
       } else {
         const data = await response.json();
         console.log(data);
-        const { refresh, access, token, unique_id, is_free, user_id } = data;
+        // const { refresh, access, token, unique_id, is_free, user_id } = data;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("access", access);
-        localStorage.setItem("refresh", refresh);
-        localStorage.setItem("username", inputValue.email);
-        localStorage.setItem("userRole", is_free);
-        localStorage.setItem("stripeid", user_id);
-        console.log(typeof is_free);
-        setUserRole(is_free);
+        // localStorage.setItem("token", token);
+        // localStorage.setItem("access", access);
+        // localStorage.setItem("refresh", refresh);
+        // localStorage.setItem("username", inputValue.email);
+        // localStorage.setItem("userRole", is_free);
+        // localStorage.setItem("stripeid", user_id);
+        // console.log(typeof is_free);
+        // setUserRole(is_free);
 
-        let newuserId = unique_id.toLowerCase();
-        localStorage.setItem("userId", newuserId);
+        // let newuserId = unique_id.toLowerCase();
+        // localStorage.setItem("userId", newuserId);
         toast.success("User login successful");
         // window.location.reload();
         navigate("/Dashboard");
@@ -58,7 +59,7 @@ function Login() {
       console.log("Error:", error);
     }
   };
-  console.log("user role in Login " + userRole);
+  // console.log("user role in Login " + userRole);
   function showPasswordHandler() {
     setShowPassword(true);
     setTimeout(() => {
@@ -67,12 +68,18 @@ function Login() {
   }
 
   return (
+    <div
+      className="flex flex-col justify-center bg-center bg-cover bg-no-repeat min-h-screen"
+      style={{
+        backgroundImage: `url(${OptionBG})`,
+      }}
+    >
     <div className="sm:container sm:mx-auto text-white my-24">
       <div className="absolute top-3 left-3">
         <div onClick={() => navigate("/")} className="flex cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            fill="ffffff"
+            fill="black"
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
@@ -84,25 +91,16 @@ function Login() {
               d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
             />
           </svg>
-          <p className="text-white">Back to home</p>
+          <p className="text-White">Back to home</p>
         </div>
       </div>
-      <div>
-        <h1 className="text-center font-bold text-[24px] text-white m-8">
-          Skin Guardian
-        </h1>
-      </div>
-      <div>
-        <h1 className="text-center font-bold text-[24px] text-white m-8">
-          Your AI-Guide to Skin Wellness
-        </h1>
-      </div>
-      <div className="shadowb absolute top-7 left-0 h-72 w-[800px] "></div>
+        
+      
       <div className="card">
-        <h1 className="text-center md:text-[28px] text-[22px] font-medium text-white pt-1">
-          Login
+        <h1 className="text-center md:text-[28px] text-[22px] font-medium text-White pt-1">
+        Welcome Back !!
         </h1>
-        <p className="tag-line">I Can help you to your Skin wellness</p>
+        <p className="tag-line">Login To Continue </p>
         <div className=" grid sm:grid-cols-2  grid-cols-1 gap-5">
           <GoogleAuth />
 
@@ -155,25 +153,18 @@ function Login() {
           <p className="tag-line">
             Don't have an account?
             <Link to="/SignUp">
-              <span className="text-white"> Sign up.</span>
+              <span className="text-white hover:underline hover:text-blue-600"> Sign up.</span>
             </Link>
           </p>
           <p className="tag-line">
             <Link to="/forgot-password">
-              <span className="text-white underline"> Forget Password.</span>
+              <span className="text-white underline hover:text-blue-600 "> Forget Password.</span>
             </Link>
           </p>
         </div>
       </div>
-      <div className="shadowb absolute bottom-7 right-0 h-72 w-[800px] "></div>
-      <p className="tag-line2 text-white my-2">
-        <span className="text-white"> By signing in, you agree to our</span>{" "}
-        &nbsp;
-        <span className="text-[#75A48C]">
-          Terms of Service <span className="text-white">and </span>Privacy
-          Policy.
-        </span>
-      </p>
+  
+      </div>
     </div>
   );
 }
