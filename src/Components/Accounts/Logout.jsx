@@ -7,10 +7,11 @@ export default function Logout() {
 
     if (!refresh) {
       alert("No refresh token found");
+      localStorage.clear();
+      window.location.href = "/Login";
+
       return;
     }
-
-    localStorage.clear();
 
     try {
       const response = await fetch("http://127.0.0.1:8000/logout/", {

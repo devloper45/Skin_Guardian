@@ -28,9 +28,9 @@ function SignUp() {
   const handlefreeSignup = async (event) => {
     event.preventDefault();
     // const validationErrors = validation(inputValue); // Validate form data
-    setError(validationErrors===0);
+    // setError(validationErrors.length===0);
 
-    if (Object.keys(validationErrors).length === 0) {
+    // if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await fetch("https://fyp-backend.adaptable.app/v1/api/user", {
           method: "POST",
@@ -56,7 +56,7 @@ function SignUp() {
         console.error("Error:", error);
         toast.error("An error occurred while signing up.");
       }
-    }
+    
   };
 
  

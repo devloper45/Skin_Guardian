@@ -25,6 +25,7 @@ export default {
       },
       colors: {
         primaryColor: "#eb456a",
+        primary: "#2196f3", // bg-blue-500
         InputColor: "#0066FF",
         InputColorHover: "#5998f7",
         White: "#000000",

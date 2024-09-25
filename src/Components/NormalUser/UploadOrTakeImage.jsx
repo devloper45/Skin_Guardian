@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 import Api from "../ProtectRoute/Api";
 
-export default function UploadOrTakeImage() {
+export default function UploadOrTakeImage({ handleUploadPic }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [image, setImage] = useState(null);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
@@ -11,7 +11,7 @@ export default function UploadOrTakeImage() {
   const videoConstraints = {
     width: 1920,
     height: 1080,
-    facingMode: "user"
+    facingMode: "user",
   };
 
   const capture = useCallback(() => {
@@ -70,10 +70,11 @@ export default function UploadOrTakeImage() {
 
   async function picToBackend(imageFile) {
     try {
+   
       const formData = new FormData();
       formData.append("image", imageFile);
 
-      const response = await Api.post("/user/image",formData);
+      const response = await Api.post("/user/image", formData);
 
       if (response.ok) {
         setErrorMessage("");
@@ -85,16 +86,18 @@ export default function UploadOrTakeImage() {
       setErrorMessage("An error occurred while uploading.");
     }
   }
+  function handleInnerClose() {
+    console.log("handle it now ");
+    setImage(null);
+    setIsTakingPhoto(false);
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#ffffff]">
-      <div className="flex h-[500px] w-[500px] bg-[#77ccee] border rounded-3xl relative p-6">
+    <div className="flex justify-center items-center ">
+      <div className="flex h-auto w-[500px] bg-[#f5f6f7] border rounded-3xl relative p-6">
         <div
           className="absolute top-2 right-2 hover:cursor-pointer"
-          onClick={() => {
-            setImage(null);
-            setIsTakingPhoto(false);
-          }}
+          onClick={handleUploadPic}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,9 +112,24 @@ export default function UploadOrTakeImage() {
             />
           </svg>
         </div>
-        <div className="flex flex-col justify-center items-center w-full">
+        <div className="  relative flex flex-col justify-center items-center w-full">
           {isTakingPhoto ? (
             <>
+              <div className=" flex justify-end w-full  ">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 hover:cursor-pointer"
+                  onClick={handleInnerClose}
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
               <Webcam
                 audio={false}
                 ref={webcamRef}
@@ -132,16 +150,12 @@ export default function UploadOrTakeImage() {
               </button>
             </>
           )}
-          {errorMessage && (
-            <p className="text-red-500 mt-2">{errorMessage}</p>
-          )}
+          {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
         </div>
       </div>
     </div>
   );
 }
-
-
 
 // import React, { useState } from "react";
 
@@ -253,17 +267,16 @@ export default function UploadOrTakeImage() {
 
 // export default function UploadOrTakeImage() {
 
-
 //   function handleTakePhoto(){
 //     picToBackend()
 
 //   }
 //   function handleUpload(){
-    
+
 //     picToBackend();
 //   }
 //   async function picToBackend(){
-//     // Api call 
+//     // Api call
 //   }
 //   return (
 //     <div className="flex justify-center items-center min-h-screen">

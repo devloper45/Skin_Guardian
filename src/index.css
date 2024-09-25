@@ -18,7 +18,7 @@
 @layer base {
   body {
     /* @apply bg-[url('./assets/bgvector.png')] bg-contain bg-no-repeat ; */
-    @apply bg-[#d6d6d6];
+    @apply bg-[#ffffff];
   }
 }
 

@@ -45,7 +45,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="flex m-2 justify-between">
+      <div className="flex bg-[#5d6ae0d8]  justify-between">
         <div onClick={() => navigate("/")} className="flex">
           <img src={logo} className="h-7 w-7 m-2" alt="Logo" />
           <h1 className="font-bold text-base sm:text-2xl text-white m-1">

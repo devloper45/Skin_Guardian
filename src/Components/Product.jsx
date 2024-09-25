@@ -2,7 +2,7 @@ import React from 'react'
 
 import Navbar from './Navbar'
 
-function Product() {
+function MyProduct() {
   return (
     <>
     <Navbar/>
@@ -12,4 +12,4 @@ function Product() {
   )
 }
 
-export default Product
+export default MyProduct
