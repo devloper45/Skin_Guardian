@@ -19,12 +19,11 @@ import PUploadFile from "./Components/Docter/PUploadFile.jsx";
 import Auth from "./Components/ProtectRoute/auth.jsx";
 import ConsultDermatologist from "./Components/NormalUser/ConsultDermatologist.jsx";
 import ConsultCancerSpecialist from "./Components/NormalUser/ConsultCancerSpecialist.jsx";
-// import UploadOrTakeImage from "./Components/NormalUser/UploadOrTakeImage.jsx";
-
 import MyProduct from "./Components/Product";
 import SkinWellness from "./Components/NormalUser/SkinProducts.jsx";
 import Product from "./Components/NormalUser/SkinProduct.jsx";
 import UploadImage from "./Components/NormalUser/UploadImage.jsx";
+import ShoppingCart from "./Components/NormalUser/ShoppingCart.jsx";
 
 function App() {
   return (
@@ -48,18 +47,10 @@ function App() {
             />
             <Route path="/Pricing" element={<Pricing />} />
             <Route path="/skinproduct/:id" element={<Product />} />
+            <Route path="/ShoppingCart" element={<ShoppingCart />} />
 
             <Route path="/Product" element={<MyProduct />} />
             <Route path="/SignUp" element={<SignUp />} />
-            {/* <Route
-              path="/UploadOrTakeImage"
-              element={
-                // <Protect>
-                  <UploadOrTakeImage />
-                // </Protect>
-              }
-            /> */}
-
             <Route path="/forgot-password" element={<Forgotpassword />} />
             <Route path="/reset-password" element={<Resetpassword />} />
           </Routes>

@@ -2,7 +2,9 @@ import React, { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam"; // Assuming you're using react-webcam for capturing photos
 import document from "../../assets/document.png";
 import Api from "../ProtectRoute/Api";
-
+import { Button, Result } from "antd";
+import { Link } from "react-router-dom";
+import Navbarr from "../Navbarr";
 export default function UploadImage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [image, setImage] = useState(null);
@@ -10,6 +12,7 @@ export default function UploadImage() {
   const webcamRef = useRef(null);
   const fileInputRef = useRef(null);
   const [imageName, setImageName] = useState(null);
+  const [AiResponse, setResponse] = useState("");
   const [file, setFile] = useState(null);
 
   const videoConstraints = {
@@ -78,9 +81,10 @@ export default function UploadImage() {
 
       const response = await Api.post("/user/image", formData);
 
-      if (response.status===201) {
+      if (response.status === 201) {
         setErrorMessage("");
-        
+        setResponse("negative");
+
         // alert("Image uploaded successfully!");
       } else {
         setErrorMessage("Failed to upload image.");
@@ -118,8 +122,24 @@ export default function UploadImage() {
   }
 
   return (
-    <div>
+    <div className="relative">
+      <Navbarr />
       <div className="sm:mb-16 md:mb-10 lg:mb-1 p-4 py-6 justify-center">
+        {AiResponse === "negative" && (
+          <div className="absolute bg-white w-full  h-full z-10">
+            <Result
+              status="success"
+              title="Successfully Analyzed the image "
+              subTitle="Congratulations ! No cancer found"
+              extra={[
+                <Button type="primary" key="console">
+                  <Link to="/SkinProducts">Buy Skin care Products</Link>
+                </Button>,
+                <Button key="buy">Buy Again</Button>,
+              ]}
+            />
+          </div>
+        )}
         <div className="flex flex-col items-center m-3 text-center">
           <h1 className="bold text-4xl m-3">Your SkinWellness Assistant</h1>
           <p className="text-xl">Upload your Image</p>
@@ -175,49 +195,59 @@ export default function UploadImage() {
           </label>
         </div>
       </div>
-
-     
-      <div className="flex h-auto w-[500px] relative p-6">
-        <div
-          className="absolute top-2 right-2 hover:cursor-pointer"
-          onClick={handleInnerClose}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-        <div className="relative flex flex-col justify-center items-center w-full">
-          {isTakingPhoto ? (
-            <>
-              <Webcam
-                audio={false}
-                ref={webcamRef}
-                screenshotFormat="image/jpeg"
-                videoConstraints={videoConstraints}
-              />
-              <button className="btn mt-4" onClick={capture}>
-                Capture
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="btn mb-4" onClick={handleTakePhoto}>
-                Take Image
-              </button>
-            </>
-          )}
-          {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
-        </div>
+      <div className=" flex justify-center my-4">
+        <button className="btn mb-4" onClick={handleTakePhoto}>
+          Take Image
+        </button>
       </div>
+      <div className=" flex justify-center">
+        {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
+      </div>
+
+      {isTakingPhoto && (
+        <div
+          className=" bg-black/70 z-20 flex justify-center items-center top-0 left-0
+         absolute w-full min-h-screen"
+        >
+          <div className="flex flex-col bg-white rounded-lg h-auto w-[500px] relative p-6">
+            <div
+              className="absolute top-2 right-2 hover:cursor-pointer"
+              onClick={handleInnerClose}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="mt-4 flex flex-col justify-center items-center w-full">
+              <>
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
+                  videoConstraints={videoConstraints}
+                />
+                <button className="btn mt-4" onClick={capture}>
+                  Capture
+                </button>
+              </>
+            </div>
+            <span className=" text-red-500 text-sm">
+              {" "}
+              IMPORTANT In order to get accurate result your camera must be
+              above 12mp
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,16 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Api from "../ProtectRoute/Api";
 import Navbarr from "../Navbarr";
+
 export default function Product() {
   const { id } = useParams(); // Accessing the product ID from the URL
-  const [product, setProduct] = useState(null);
+  const [productData, setProduct] = useState(null);
 
   useEffect(() => {
     async function fetchProduct() {
       try {
         const response = await Api.get(`/product/${id}`);
-        console.log(response);
-        setProduct(response.data);
+        const data = response.data.data;
+        console.log("Fetched product data:", data);
+        setProduct(data);
       } catch (error) {
         console.log("Failed to fetch product details", error);
       }
@@ -20,7 +22,7 @@ export default function Product() {
     fetchProduct();
   }, [id]);
 
-  if (!product) {
+  if (!productData) {
     return <div>Loading...</div>;
   }
 
@@ -28,56 +30,53 @@ export default function Product() {
     <>
       <Navbarr />
       <header></header>
-      <div className="flex flex-col md:flex-row p-6 bg-background">
-        <div className="md:w-1/2">
+      <div className="flex flex-col mt-2 md:flex-row p-6 bg-background">
+        <div className="md:w-1/2  m-3 h-[500px]">
           <img
-            src="https://placehold.co/600x600?text=Smoothie+Image"
-            alt="Ginger + Greens Smoothie"
-            className="w-full h-auto rounded-lg"
+            src={productData.imageUrl}
+            alt={productData.name}
+            className="w-full h-[500px] rounded-lg"
           />
         </div>
-        <div className="md:w-1/2 md:pl-6">
+
+        <div className="md:w-1/2  m-3 md:pl-6">
           <h2 className="text-2xl font-bold text-foreground">
-            Skin Glow Smoothie
+            {productData.name}
           </h2>
-          <p className="text-muted-foreground">
-            Inspired by: a wake-me-up shot of green juice
-          </p>
+          <p className="text-muted-foreground">{productData.category}</p>
           <div className="flex items-center my-2">
             <span className="text-yellow-500">★★★★☆</span>
-            <span className="text-muted-foreground ml-2">(884 ratings)</span>
+            <span className="text-muted-foreground ml-2">(4 ratings)</span>
           </div>
           <p className="text-muted-foreground mb-4">
-            The fiery zing of ginger. The velvety texture of bananas, avocado,
-            and flax seeds. A hint of sweetness from dates. A squeeze of lemon.
-            And, of course, nutrient-dense, bright green spinach. It’s green …
+            {productData.description}
           </p>
           <a href="#" className="text-primary underline">
             Read full description
           </a>
-          <div className="mt-6">
-            <button className="bg-secondary text-secondary-foreground hover:bg-secondary/80 py-2 px-4 rounded-lg">
-              ADD TO BOX - $8.49
-            </button>
-          </div>
+
           <div className="mt-4">
             <h3 className="text-lg font-semibold text-foreground">
-              All ingredients
+              Skin Condition
             </h3>
-            <details className="text-muted-foreground">
-              <summary className="cursor-pointer">View ingredients</summary>
-              <ul className="list-disc list-inside">
-                <li>Ginger</li>
-                <li>Banana</li>
-                <li>Avocado</li>
-                <li>Flax seeds</li>
-                <li>Dates</li>
-                <li>Lemon</li>
-                <li>Spinach</li>
-              </ul>
-            </details>
+            <ul className="list-disc list-inside text-muted-foreground">
+              {productData.skinCondition.map((condition, index) => (
+                <li key={index}>{condition}</li>
+              ))}
+            </ul>
           </div>
           <div className="mt-4">
+            <h3 className="text-lg font-semibold text-foreground">Stock</h3>
+            <p className="text-muted-foreground">
+              Available Stock: {productData.stock}
+            </p>
+          </div>
+          <div className="mt-6">
+            <button className="btn !w-full text-secondary-foreground hover:bg-secondary/80 py-2 px-4 rounded-lg">
+              ADD TO BOX - {productData.price} Pkr
+            </button>
+          </div>
+          {/* <div className="mt-4">
             <h3 className="text-lg font-semibold text-foreground">
               Nutrition Facts
             </h3>
@@ -88,9 +87,17 @@ export default function Product() {
               <p>Fat: 10g</p>
               <p>Carbohydrates: 40g</p>
             </details>
-          </div>
+          </div> */}
         </div>
       </div>
+      <div>
+        <div className=" flex justify-center items-center ">
+          <h2 className="text-2xl my-5 font-bold text-foreground">
+            You may like
+          </h2>
+        </div>
+      </div>
+      product list
     </>
   );
 }

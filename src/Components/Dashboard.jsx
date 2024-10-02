@@ -4,7 +4,7 @@ import SideBarrr from "./SideBarrr";
 import { UserContext } from "../context/contextApi";
 import Dashboardbg from "../assets/bg.avif";
 import Navbarr from "./Navbarr";
-import UploadOrTakeImage from "./NormalUser/UploadOrTakeImage";
+
 // import UploadFileTemplate from "./UploadFileTemplate";
 // import logo from "../assets/logo.png";
 
@@ -19,10 +19,7 @@ export default function Dashboard() {
     navigate(path);
   }
 
-  function handleUploadPic() {
-    console.log("hello from handleuploadpic");
-    setOpenModel((prev) => !prev);
-  }
+ 
 
   async function handlePremium() {
     const stripeid = localStorage.getItem("stripeid");
@@ -60,12 +57,8 @@ export default function Dashboard() {
     <>
       <Navbarr />
 
-      <div className="flex relative   overflow-hidden text-White w-full">
-        {openModel && (
-          <div className=" absolute w-full overflow-hidden h-full flex justify-center items-center bg-black bg-opacity-15">
-            <UploadOrTakeImage handleUploadPic={handleUploadPic} />
-          </div>
-        )}
+      <div className="flex    overflow-hidden text-White w-full">
+        
         <div
           className={`flex overflow-auto w-full  transition-all duration-300`}
         >
@@ -146,7 +139,7 @@ export default function Dashboard() {
 
               {/* Item 2 */}
               <div
-                onClick={() => handleUploadPic()}
+                onClick={() => handleTemplate("/uploadImage")}
                 className="mx-2 cursor-pointer p-6 flex bg-[#77ccee] rounded-lg shadow-lg"
               >
                 <div>

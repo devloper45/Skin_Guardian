@@ -8,12 +8,11 @@ function SignUp() {
   const [error, setError] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [inputValue, setInputValue] = useState({
-    firstName:"",
-    lastName:"",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
-    confirmPassword:"",
-    
+    confirmPassword: "",
   });
 
   const navigate = useNavigate();
@@ -24,42 +23,40 @@ function SignUp() {
     setInputValue((prev) => ({ ...prev, [name]: value }));
   };
 
-
   const handlefreeSignup = async (event) => {
     event.preventDefault();
     // const validationErrors = validation(inputValue); // Validate form data
     // setError(validationErrors.length===0);
 
     // if (Object.keys(validationErrors).length === 0) {
-      try {
-        const response = await fetch("https://fyp-backend.adaptable.app/v1/api/user", {
+    try {
+      const response = await fetch(
+        "https://fyp-production-c71f.up.railway.app/v1/api/user",
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(inputValue),
-        });
-
-        if (!response.ok) {
-          throw new Error("Sign-up request failed");
         }
+      );
 
-        const result = await response.json();
-        console.log("Sign-up successful:", result);
-
-       
-          // toast("Check your email for confirmation.");
-        
-
-        navigate("/Login"); // Redirect to login page after successful signup
-      } catch (error) {
-        console.error("Error:", error);
-        toast.error("An error occurred while signing up.");
+      if (!response.ok) {
+        throw new Error("Sign-up request failed");
       }
-    
+
+      const result = await response.json();
+      console.log("Sign-up successful:", result);
+
+      // toast("Check your email for confirmation.");
+
+      navigate("/Login"); // Redirect to login page after successful signup
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred while signing up.");
+    }
   };
 
- 
   function showPasswordHandler() {
     setShowPassword(true);
     setTimeout(() => {
@@ -75,7 +72,6 @@ function SignUp() {
       }}
     >
       <div className="sm:container sm:mx-auto mx-auto">
-       
         <div className="card py-5 px-5">
           <h1 className="text-center md:text-[28px] text-[22px] font-medium text-White pt-1">
             Sign Up
@@ -83,26 +79,25 @@ function SignUp() {
           <p className="tag-line"> Your AI-Guide to Skin Wellness</p>
           <div className="mx-4">
             <form onSubmit={handlefreeSignup}>
-            <div className=" flex ">
-            <input
-                className="input mr-1"
-                type="text"
-                placeholder="First Name"
-                name="firstName"
-                value={inputValue.firstName}
-                onChange={onChangeHandler}
-              />
+              <div className=" flex ">
                 <input
-                className="input"
-                type="text"
-                placeholder="Last Name"
-                name="lastName"
-                value={inputValue.lastName}
-                onChange={onChangeHandler}
-              />
-              {error.firstname && <p className="error">{error.firstname}</p>}
-                  
-                  </div>
+                  className="input mr-1"
+                  type="text"
+                  placeholder="First Name"
+                  name="firstName"
+                  value={inputValue.firstName}
+                  onChange={onChangeHandler}
+                />
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="Last Name"
+                  name="lastName"
+                  value={inputValue.lastName}
+                  onChange={onChangeHandler}
+                />
+                {error.firstname && <p className="error">{error.firstname}</p>}
+              </div>
 
               <input
                 className="input"
@@ -112,11 +107,10 @@ function SignUp() {
                 value={inputValue.email}
                 onChange={onChangeHandler}
               />
-              
+
               {error.email && <p className="error">{error.email}</p>}
 
               <div className=" flex  bg-white rounded-xl my-2 ">
-                
                 <input
                   className=" bg-white rounded-xl  p-1 w-full sm:p-2 outline-none text-black"
                   type={showPassword ? "text" : "password"}
@@ -180,13 +174,7 @@ function SignUp() {
               <button type="submit" className="btn">
                 Sign Up for free
               </button>
-              <button
-                
-                
-                className="btn"
-              >
-                Sign Up As Docter
-              </button>
+              <button className="btn">Sign Up As Docter</button>
             </form>
             <p className="tag-line">
               Already have an account?
@@ -196,7 +184,6 @@ function SignUp() {
             </p>
           </div>
         </div>
-       
       </div>
     </div>
   );

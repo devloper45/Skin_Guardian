@@ -26,7 +26,7 @@ function Login() {
   const LoginHandler = async () => {
     try {
       const response = await fetch(
-        "https://fyp-backend.adaptable.app/v1/api/user/login",
+        "https://fyp-production-c71f.up.railway.app/v1/api/user/login",
         {
           method: "POST",
           headers: {

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../Navbar";
 import Navbarr from "../Navbarr";
+import Appointement from "./Appointement";
 
 const doctors = [
   {
@@ -41,7 +42,7 @@ const doctors = [
   },
 ];
 
-const DoctorCard = ({ doctor }) => (
+const DoctorCard = ({ doctor, setOpenAppointementModel }) => (
   <div className="bg-[#edf2f3] dark:bg-card rounded-lg shadow-xl p-4 flex justify-between items-start">
     <div className="flex items-center">
       <img
@@ -70,37 +71,47 @@ const DoctorCard = ({ doctor }) => (
       <button className="bg-secondary btn text-secondary-foreground hover:bg-secondary/80 mt-2">
         Video Consultation
       </button>
-      <button className="bg-primary btn text-primary-foreground hover:bg-primary/80 mt-2">
+      <button
+        className="bg-primary btn text-primary-foreground hover:bg-primary/80 mt-2"
+        onClick={() => setOpenAppointementModel(true)}
+      >
         Book Appointment
       </button>
       <p className="text-muted-foreground">{doctor.fee}</p>
     </div>
   </div>
 );
-
-const ConsultCancerSpecialist = () => (
-  <>
-    <Navbarr />
-    <header className="bg-gray-100 p-6 shadow-md">
-      <div className="container mx-auto text-center">
-        <h1 className="text-3xl font-bold m-4  text-gray-800">
-          Skin Cancer Specialists
-        </h1>
-        <p className="mt-2 m-6 text-gray-600">
-          Find expert dermatologists and skin cancer specialists for
-          consultations and treatments. Book an appointment or start a video
-          consultation with the best doctors available.
-        </p>
-      </div>
-    </header>
-    <div className="container mx-auto p-4">
-      <div id="doctor-list" className="space-y-4">
-        {doctors.map((doctor, index) => (
-          <DoctorCard key={index} doctor={doctor} />
-        ))}
+function ConsultCancerSpecialist() {
+  const [openAppointementModel, setOpenAppointementModel] = useState(false);
+  return (
+    <div className=" relative ">
+      {openAppointementModel && <Appointement />}
+      <Navbarr />
+      <header className="bg-gray-100 p-6 shadow-md">
+        <div className="container mx-auto text-center">
+          <h1 className="text-3xl font-bold m-4  text-gray-800">
+            Skin Cancer Specialists
+          </h1>
+          <p className="mt-2 m-6 text-gray-600">
+            Find expert dermatologists and skin cancer specialists for
+            consultations and treatments. Book an appointment or start a video
+            consultation with the best doctors available.
+          </p>
+        </div>
+      </header>
+      <div className="container mx-auto p-4">
+        <div id="doctor-list" className="space-y-4">
+          {doctors.map((doctor, index) => (
+            <DoctorCard
+              key={index}
+              doctor={doctor}
+              setOpenAppointementModel={setOpenAppointementModel}
+            />
+          ))}
+        </div>
       </div>
     </div>
-  </>
-);
+  );
+}
 
 export default ConsultCancerSpecialist;
