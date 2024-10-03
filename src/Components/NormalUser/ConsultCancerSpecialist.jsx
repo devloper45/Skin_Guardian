@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar";
 import Navbarr from "../Navbarr";
 import Appointement from "./Appointement";
@@ -42,7 +42,38 @@ const doctors = [
   },
 ];
 
-const DoctorCard = ({ doctor, setOpenAppointementModel }) => (
+// async function getDoctersListFromBackend() {
+//   console.log("from docter function");
+//   try {
+//     console.log("from try");
+//     const response = await Api.get("/docter");
+//     console.log("from response");
+
+//     const doctersList = response.data.data; // Accessing the data from the response
+//     console.log(doctersList);
+//     setDocters(doctersList); // Setting the products state with the fetched data
+
+//     if (response.status >= 200 && response.status < 300) {
+//       console.log("Docters fetched successfully!");
+//     } else {
+//       console.log("Failed to fetch docters list");
+//     }
+//   } catch (error) {
+//     console.log("error", error);
+//   }
+// }
+
+// useEffect(() => {
+//   getDoctersListFromBackend();
+// }, []);
+function handleDocter(name, setdocterName,setOpenAppointementModel) {
+  console.log(name);
+  setdocterName(name);
+  setOpenAppointementModel(true);
+  // navigate(`/skinproduct/${id}`);
+}
+
+const DoctorCard = ({ doctor, setOpenAppointementModel, setdocterName }) => (
   <div className="bg-[#edf2f3] dark:bg-card rounded-lg shadow-xl p-4 flex justify-between items-start">
     <div className="flex items-center">
       <img
@@ -73,7 +104,7 @@ const DoctorCard = ({ doctor, setOpenAppointementModel }) => (
       </button>
       <button
         className="bg-primary btn text-primary-foreground hover:bg-primary/80 mt-2"
-        onClick={() => setOpenAppointementModel(true)}
+        onClick={() => handleDocter(doctor.name, setdocterName ,setOpenAppointementModel)}
       >
         Book Appointment
       </button>
@@ -83,9 +114,17 @@ const DoctorCard = ({ doctor, setOpenAppointementModel }) => (
 );
 function ConsultCancerSpecialist() {
   const [openAppointementModel, setOpenAppointementModel] = useState(false);
+  const [docterName, setdocterName] = useState("");
+
   return (
-    <div className=" relative ">
-      {openAppointementModel && <Appointement />}
+    <div className=" relative min-h-screen ">
+      {openAppointementModel && (
+        <Appointement
+          setOpenAppointementModel={setOpenAppointementModel}
+          docterName={docterName}
+          setdocterName={setdocterName}
+        />
+      )}
       <Navbarr />
       <header className="bg-gray-100 p-6 shadow-md">
         <div className="container mx-auto text-center">
@@ -106,6 +145,7 @@ function ConsultCancerSpecialist() {
               key={index}
               doctor={doctor}
               setOpenAppointementModel={setOpenAppointementModel}
+              setdocterName={setdocterName}
             />
           ))}
         </div>

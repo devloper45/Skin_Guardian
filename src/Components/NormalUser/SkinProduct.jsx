@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Api from "../ProtectRoute/Api";
 import Navbarr from "../Navbarr";
 
 export default function Product() {
   const { id } = useParams(); // Accessing the product ID from the URL
   const [productData, setProduct] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchProduct() {
@@ -30,6 +31,25 @@ export default function Product() {
     <>
       <Navbarr />
       <header></header>
+      <p className=" m-3 text-muted-foreground">
+        <span
+          className=" hover:underline hover:underline-offset-1 cursor-pointer hover:text-blue-300"
+          onClick={() => navigate("/dashboard")}
+        >
+          Home
+        </span>{" "}
+        &gt;{" "}
+        <span
+          className=" cursor-pointer hover:underline hover:underline-offset-1 hover:text-blue-300"
+          onClick={() => navigate("/SkinProducts")}
+        >
+          Shop
+        </span>{" "}
+        &gt;
+        <span className=" hover:underline hover:underline-offset-1 hover:text-blue-300 cursor-pointer mx-1">
+          {productData.name}
+        </span>
+      </p>
       <div className="flex flex-col mt-2 md:flex-row p-6 bg-background">
         <div className="md:w-1/2  m-3 h-[500px]">
           <img

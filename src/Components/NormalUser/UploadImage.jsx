@@ -9,6 +9,8 @@ export default function UploadImage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [image, setImage] = useState(null);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
+  const [fileIsUploading, setFileIsUploading] = useState(false);
+
   const webcamRef = useRef(null);
   const fileInputRef = useRef(null);
   const [imageName, setImageName] = useState(null);
@@ -76,6 +78,7 @@ export default function UploadImage() {
 
   async function picToBackend(imageFile) {
     try {
+      setFileIsUploading(true)
       const formData = new FormData();
       formData.append("image", imageFile);
 
@@ -83,13 +86,17 @@ export default function UploadImage() {
 
       if (response.status === 201) {
         setErrorMessage("");
+        setFileIsUploading(false)
         setResponse("negative");
 
         // alert("Image uploaded successfully!");
       } else {
+        setFileIsUploading(false)
         setErrorMessage("Failed to upload image.");
+
       }
     } catch (error) {
+      setFileIsUploading(false)
       setErrorMessage("An error occurred while uploading.");
     }
   }
@@ -124,6 +131,11 @@ export default function UploadImage() {
   return (
     <div className="relative">
       <Navbarr />
+      {fileIsUploading && (
+              <div className="w-[100vw] min-h-screen absolute z-20 flex justify-center items-center top-0 bg-black/70 ">
+                <div className=" loader h-10 z-20 "></div>
+              </div>
+            )}
       <div className="sm:mb-16 md:mb-10 lg:mb-1 p-4 py-6 justify-center">
         {AiResponse === "negative" && (
           <div className="absolute bg-white w-full  h-full z-10">
@@ -141,9 +153,14 @@ export default function UploadImage() {
           </div>
         )}
         <div className="flex flex-col items-center m-3 text-center">
-          <h1 className="bold text-4xl m-3">Your SkinWellness Assistant</h1>
-          <p className="text-xl">Upload your Image</p>
-          <p className="mb-10">Get help from your own Personal AI</p>
+          <h1 className="bold text-4xl m-3">SkinGuardian</h1>
+          <p className="text-xl">
+            Get Your Skin Checked with AI-Powered Analysis
+          </p>
+          <p className="mb-10">
+            Upload a picture, get instant results, and consult with a doctor or
+            shop for skin care products
+          </p>
         </div>
         <div className="flex justify-center mb-4 sm:mb-0">
           <div

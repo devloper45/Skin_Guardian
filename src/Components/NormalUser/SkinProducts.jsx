@@ -72,7 +72,7 @@ const SkinWellness = () => {
             Skin Wellness Products
           </h2>
           <p className="text-muted-foreground">
-            Home &gt; Shop &gt; Skin Wellness
+           <span className=" hover:underline hover:underline-offset-1 cursor-pointer hover:text-blue-300" onClick={()=>navigate("/dashboard")}>Home</span>  &gt; <span className=" cursor-pointer hover:underline hover:underline-offset-1 hover:text-blue-300" onClick={()=>navigate("/Dashboard")}>Shop</span> &gt;<span className=" hover:underline hover:underline-offset-1 hover:text-blue-300 cursor-pointer" onClick={()=>navigate("/")}>Skin Wellness</span> 
           </p>
         </div>
 
@@ -88,8 +88,9 @@ const SkinWellness = () => {
             <div
               key={product.id}
               className="bg-card cursor-pointer rounded-lg shadow-md p-4"
-              onClick={() => handleProduct(product.id)}
+              
             >
+              <div onClick={() => handleProduct(product.id)} >
               <img
                 src={product.imageUrl}
                 alt={product.name}
@@ -99,6 +100,9 @@ const SkinWellness = () => {
               <p className="text-muted-foreground">
                 Rs. {product.price.toLocaleString()}
               </p>
+
+              </div>
+             
               <div className="flex justify-between mt-2">
                 <button
                   className="bg-primary text-white hover:bg-primary/80 p-2 rounded"
@@ -107,7 +111,7 @@ const SkinWellness = () => {
                   Buy Now
                 </button>
                 <button
-                  className="bg-secondary text-secondary-foreground hover:bg-secondary/80 p-2 rounded"
+                  className="bg-primary  text-white hover:bg-primary/80 p-2 rounded"
                   onClick={() => handleAddToCart(product)}
                 >
                   Add to Cart

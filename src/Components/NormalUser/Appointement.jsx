@@ -1,11 +1,19 @@
-import React from "react";
-export default function Appointement() {
+import React, { useRef } from "react";
+import { useCloseRef } from "../../hooks/useCloseRef";
+export default function Appointement({ setOpenAppointementModel, docterName }) {
+  const AppointementModeRef = useRef(null);
+  useCloseRef(AppointementModeRef, setOpenAppointementModel);
+  console.log(docterName + "hrhehe");
+
   return (
     <div
       className=" bg-black/70 z-20 flex justify-center items-center top-0 left-0
    absolute w-full h-full"
     >
-      <div className="flex flex-col bg-white rounded-lg h-auto w-9/12 relative p-6">
+      <div
+        ref={AppointementModeRef}
+        className="flex flex-col bg-white rounded-lg h-auto w-9/12 relative p-6"
+      >
         <div className=" mx-auto p-6 bg-card rounded-lg shadow-md">
           <div className="flex items-center mb-4">
             <img
@@ -14,9 +22,9 @@ export default function Appointement() {
               className="rounded-full mr-4"
             />
             <div>
-              <h2 className="text-xl font-bold">Dr. Sippy Iqbal</h2>
+              <h2 className="text-xl font-bold">Dr. {docterName}</h2>
               <p className="text-muted-foreground">
-                oladoc Care Video Consultation (Online)
+                Skin Guardian Video Consultation (Online)
               </p>
               <p className="text-primary">Fee: Rs. 1,500</p>
             </div>
