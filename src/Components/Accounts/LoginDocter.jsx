@@ -8,14 +8,14 @@ import MicrosoftAuth from "./MicrosoftAuth";
 import OptionBG from "../../assets/bg.avif";
 import { ApiBaseUrl } from "../../utils/util";
 
-function Login() {
+function LoginDocter() {
   // const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
   });
-  const { userRole, setUserRole } = useContext(UserContext);
+//   const { userRole, setUserRole } = useContext(UserContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -306,4 +306,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginDocter;

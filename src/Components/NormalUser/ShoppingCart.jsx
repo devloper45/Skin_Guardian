@@ -8,7 +8,7 @@ export default function ShoppingCart() {
       <div className="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
         <h1 className="text-2xl font-extrabold text-gray-800">Your Cart</h1>
         <div className="grid md:grid-cols-3 gap-4 mt-8">
-          <div className="md:col-span-2 space-y-4">
+          {/* <div className="md:col-span-2 space-y-4">
             <div className="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
               <div className="flex gap-4">
                 <div className="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
@@ -278,22 +278,22 @@ export default function ShoppingCart() {
                 </h3>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="bg-white rounded-md px-4 py-6 h-max shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
             <ul className="text-gray-800 space-y-4">
               <li className="flex flex-wrap gap-4 text-sm">
-                Subtotal <span className="ml-auto font-bold">$200.00</span>
+                Subtotal <span className="ml-auto font-bold">$0</span>
               </li>
               <li className="flex flex-wrap gap-4 text-sm">
-                Shipping <span className="ml-auto font-bold">$2.00</span>
+                Shipping <span className="ml-auto font-bold">$0</span>
               </li>
               <li className="flex flex-wrap gap-4 text-sm">
-                Tax <span className="ml-auto font-bold">$4.00</span>
+                Tax <span className="ml-auto font-bold">$0</span>
               </li>
               <hr className="border-gray-300" />
               <li className="flex flex-wrap gap-4 text-sm font-bold">
-                Total <span className="ml-auto">$206.00</span>
+                Total <span className="ml-auto">$0</span>
               </li>
             </ul>
 

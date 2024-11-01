@@ -1,11 +1,12 @@
 import React from "react";
 import axios from "axios";
+import { ApiBaseUrl } from "../../utils/util";
 
 const token = localStorage.getItem("userID");
 console.log("token" + token);
 
 const Api = axios.create({
-  baseURL: "https://fyp-production-c71f.up.railway.app/v1/api",
+  baseURL: ApiBaseUrl,
   headers: {
     authorization: `Bearer ${token}`,
   },

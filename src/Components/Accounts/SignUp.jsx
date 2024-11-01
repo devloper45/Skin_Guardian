@@ -3,6 +3,8 @@ import validation from "../Validiation"; // Import your validation function
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import OptionBG from "../../assets/bg.avif";
+import { ApiBaseUrl } from "../../utils/util";
+import BacktoHome from "../../utils/BacktoHome";
 
 function SignUp() {
   const [error, setError] = useState({});
@@ -30,6 +32,7 @@ function SignUp() {
 
     // if (Object.keys(validationErrors).length === 0) {
     try {
+      const url = `${ApiBaseUrl}/user`;
       const response = await fetch(
         "https://fyp-production-c71f.up.railway.app/v1/api/user",
         {
@@ -66,12 +69,13 @@ function SignUp() {
 
   return (
     <div
-      className="flex flex-col justify-center bg-center bg-cover bg-no-repeat min-h-screen"
-      style={{
-        backgroundImage: `url(${OptionBG})`,
-      }}
+      className="flex flex-col justify-center bg-gray-50 min-h-screen"
+      // style={{
+      //   backgroundImage: `url(${OptionBG})`,
+      // }}
     >
       <div className="sm:container sm:mx-auto mx-auto">
+        <BacktoHome />
         <div className="card py-5 px-5">
           <h1 className="text-center md:text-[28px] text-[22px] font-medium text-White pt-1">
             Sign Up
@@ -81,7 +85,7 @@ function SignUp() {
             <form onSubmit={handlefreeSignup}>
               <div className=" flex ">
                 <input
-                  className="input mr-1"
+                  className="input mr-1 border border-gray-50"
                   type="text"
                   placeholder="First Name"
                   name="firstName"
@@ -174,7 +178,9 @@ function SignUp() {
               <button type="submit" className="btn">
                 Sign Up for free
               </button>
-              <button className="btn">Sign Up As Docter</button>
+              <button className="btn" onClick={() => navigate("/SignUpDocter")}>
+                Sign Up As Docter
+              </button>
             </form>
             <p className="tag-line">
               Already have an account?

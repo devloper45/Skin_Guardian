@@ -24,6 +24,8 @@ import SkinWellness from "./Components/NormalUser/SkinProducts.jsx";
 import Product from "./Components/NormalUser/SkinProduct.jsx";
 import UploadImage from "./Components/NormalUser/UploadImage.jsx";
 import ShoppingCart from "./Components/NormalUser/ShoppingCart.jsx";
+import SignUpDocter from "./Components/Accounts/SignUpDocter.jsx";
+import LoginDocter from "./Components/Accounts/LoginDocter.jsx";
 
 function App() {
   return (
@@ -37,6 +39,7 @@ function App() {
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/" element={<LandingPage />} />
             <Route path="/SkinProducts" element={<SkinWellness />} />
+            <Route path="/loginDocter" element={ <LoginDocter/> } />
             <Route
               path="/ConsultDermatologist"
               element={<ConsultDermatologist />}
@@ -51,6 +54,7 @@ function App() {
 
             <Route path="/Product" element={<MyProduct />} />
             <Route path="/SignUp" element={<SignUp />} />
+            <Route path="/SignUpDocter" element={<SignUpDocter />} />
             <Route path="/forgot-password" element={<Forgotpassword />} />
             <Route path="/reset-password" element={<Resetpassword />} />
           </Routes>

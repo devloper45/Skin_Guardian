@@ -1,9 +1,24 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useCloseRef } from "../../hooks/useCloseRef";
-export default function Appointement({ setOpenAppointementModel, docterName }) {
+import toast from "react-hot-toast";
+import Api from "../ProtectRoute/Api";
+export default function Appointement({ setOpenAppointementModel, docterName,docterID }) {
   const AppointementModeRef = useRef(null);
   useCloseRef(AppointementModeRef, setOpenAppointementModel);
   console.log(docterName + "hrhehe");
+
+ function  handleApointment(){
+  toast.success("Appointment booked successfully")
+  setOpenAppointementModel(false)
+ }
+
+ useEffect(()=>{
+  async function handleDocterDetail() {
+    const response = await Api.get(`/docter/${docterID}`)
+    
+  }
+  handleDocterDetail()
+ },[])
 
   return (
     <div
@@ -37,22 +52,25 @@ export default function Appointement({ setOpenAppointementModel, docterName }) {
             <h3 className="text-lg font-semibold">Select Date</h3>
             <div className="flex space-x-2 mt-2">
               <button className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground">
-                Oct. 02
+                Nov. 01
               </button>
               <button className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground">
-                Oct. 03
+                Nov. 02
               </button>
               <button className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground">
-                Oct. 04
+                Nov. 03
               </button>
               <button className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground">
-                Oct. 05
+                Nov. 04
               </button>
             </div>
           </div>
           <div className="mt-6">
-            <h3 className="text-lg font-semibold">Afternoon Slots</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">
+            <h3 className="text-lg font-semibold">Available Slots</h3>
+            <div
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2"
+              onClick={handleApointment}
+            >
               <button className="bg-orange-200 text-black py-2 rounded">
                 01:15 PM
               </button>
@@ -66,15 +84,6 @@ export default function Appointement({ setOpenAppointementModel, docterName }) {
               <button className="py-2 border rounded">04:15 PM</button>
               <button className="py-2 border rounded">04:35 PM</button>
               <button className="py-2 border rounded">04:55 PM</button>
-            </div>
-          </div>
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold">Evening Slots</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">
-              <button className="py-2 border rounded">05:15 PM</button>
-              <button className="py-2 border rounded">05:35 PM</button>
-              <button className="py-2 border rounded">05:55 PM</button>
-              <button className="py-2 border rounded">06:15 PM</button>
             </div>
           </div>
         </div>

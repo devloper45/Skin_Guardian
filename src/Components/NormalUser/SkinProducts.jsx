@@ -1,17 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Navbarr from "../Navbarr";
 import Api from "../ProtectRoute/Api";
 import { useNavigate } from "react-router-dom";
-
+import { UserContext } from "../../context/contextApi";
 const SkinWellness = () => {
   const [products, setProducts] = useState([]); // State to hold products data
-  const [cart, setCart] = useState([]);
+
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
+  const { cart, setCart, handleAddCart } = useContext(UserContext);
 
   const handleAddToCart = (product) => {
-    setCart([...cart, product]);
-    navigate('/ShoppingCart')
+    // setCart([...cart, product]);
+    // navigate('/ShoppingCart')
+    handleAddCart();
+  };
+  const handleBuyNow = (product) => {
+    // setCart([...cart, product]);
+    handleAddCart();
+    navigate("/ShoppingCart");
   };
 
   const handleNotifyMe = (product) => {
@@ -72,7 +79,26 @@ const SkinWellness = () => {
             Skin Wellness Products
           </h2>
           <p className="text-muted-foreground">
-           <span className=" hover:underline hover:underline-offset-1 cursor-pointer hover:text-blue-300" onClick={()=>navigate("/dashboard")}>Home</span>  &gt; <span className=" cursor-pointer hover:underline hover:underline-offset-1 hover:text-blue-300" onClick={()=>navigate("/Dashboard")}>Shop</span> &gt;<span className=" hover:underline hover:underline-offset-1 hover:text-blue-300 cursor-pointer" onClick={()=>navigate("/")}>Skin Wellness</span> 
+            <span
+              className=" hover:underline hover:underline-offset-1 cursor-pointer hover:text-blue-300"
+              onClick={() => navigate("/dashboard")}
+            >
+              Home
+            </span>{" "}
+            &gt;{" "}
+            <span
+              className=" cursor-pointer hover:underline hover:underline-offset-1 hover:text-blue-300"
+              onClick={() => navigate("/Dashboard")}
+            >
+              Shop
+            </span>{" "}
+            &gt;
+            <span
+              className=" hover:underline hover:underline-offset-1 hover:text-blue-300 cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              Skin Wellness
+            </span>
           </p>
         </div>
 
@@ -88,25 +114,23 @@ const SkinWellness = () => {
             <div
               key={product.id}
               className="bg-card cursor-pointer rounded-lg shadow-md p-4"
-              
             >
-              <div onClick={() => handleProduct(product.id)} >
-              <img
-                src={product.imageUrl}
-                alt={product.name}
-                className="w-full h-48 object-cover rounded-lg mb-2"
-              />
-              <h2 className="text-lg font-semibold">{product.name}</h2>
-              <p className="text-muted-foreground">
-                Rs. {product.price.toLocaleString()}
-              </p>
-
+              <div onClick={() => handleProduct(product.id)}>
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="w-full h-48 object-cover rounded-lg mb-2"
+                />
+                <h2 className="text-lg font-semibold">{product.name}</h2>
+                <p className="text-muted-foreground">
+                  Rs. {product.price.toLocaleString()}
+                </p>
               </div>
-             
+
               <div className="flex justify-between mt-2">
                 <button
                   className="bg-primary text-white hover:bg-primary/80 p-2 rounded"
-                  onClick={() => handleAddToCart(product)}
+                  onClick={() => handleBuyNow(product)}
                 >
                   Buy Now
                 </button>

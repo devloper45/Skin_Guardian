@@ -25,7 +25,10 @@
 @layer utilities {
   /*  =================== sign up =================== */
   .card {
-    @apply bg-[#bfdce6] shadow-3xl xsm:w-full md:w-[80%] lg:w-[45%] w-full px-5 m-auto mt-4 rounded-xl py-3;
+    @apply bg-white  shadow-3xl xsm:w-full md:w-[80%] lg:w-[45%] w-full px-5 m-auto mt-4 rounded-xl py-3;
+  }
+  .carddd {
+    @apply bg-white shadow-3xl xsm:w-full md:w-[80%] lg:w-[55%] w-full px-5 m-auto mt-2 rounded-xl py-3;
   }
   .sign-in-tag {
     @apply bg-white sm:p-3 p-2 rounded-xl flex justify-around items-center;
@@ -34,7 +37,7 @@
     @apply md:text-sm text-xs font-medium text-InputColorHover;
   }
   .input {
-    @apply bg-white rounded-xl sm:p-2 p-1 w-full my-2 outline-none text-black;
+    @apply bg-white  border border-gray-50 rounded-xl sm:p-2 p-1 w-full my-2 outline-none text-black;
   }
   .tag-line {
     @apply text-center md:text-sm text-xs py-2 font-medium text-InputColorHover pb-4;

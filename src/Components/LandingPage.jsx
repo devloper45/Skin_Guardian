@@ -42,7 +42,7 @@ const LandingPage = () => {
                           />
                         </svg>
                       </button>
-                      <button className="bg-transparent border-2 border-[#333] flex items-center transition-all font-semibold rounded-md px-5 py-2">
+                      {/* <button className="bg-transparent border-2 border-[#333] flex items-center transition-all font-semibold rounded-md px-5 py-2">
                         API documentation
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@ const LandingPage = () => {
                             data-original="#000000"
                           />
                         </svg>
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                   <div className="max-lg:mt-12 h-full">

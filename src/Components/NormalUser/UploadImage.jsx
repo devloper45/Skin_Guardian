@@ -78,7 +78,7 @@ export default function UploadImage() {
 
   async function picToBackend(imageFile) {
     try {
-      setFileIsUploading(true)
+      setFileIsUploading(true);
       const formData = new FormData();
       formData.append("image", imageFile);
 
@@ -86,17 +86,16 @@ export default function UploadImage() {
 
       if (response.status === 201) {
         setErrorMessage("");
-        setFileIsUploading(false)
+        setFileIsUploading(false);
         setResponse("negative");
 
         // alert("Image uploaded successfully!");
       } else {
-        setFileIsUploading(false)
+        setFileIsUploading(false);
         setErrorMessage("Failed to upload image.");
-
       }
     } catch (error) {
-      setFileIsUploading(false)
+      setFileIsUploading(false);
       setErrorMessage("An error occurred while uploading.");
     }
   }
@@ -132,13 +131,13 @@ export default function UploadImage() {
     <div className="relative">
       <Navbarr />
       {fileIsUploading && (
-              <div className="w-[100vw] min-h-screen absolute z-20 flex justify-center items-center top-0 bg-black/70 ">
-                <div className=" loader h-10 z-20 "></div>
-              </div>
-            )}
+        <div className="w-[100vw] min-h-screen absolute z-20 flex justify-center items-center top-0 bg-black/70 ">
+          <div className=" loader h-10 z-20 "></div>
+        </div>
+      )}
       <div className="sm:mb-16 md:mb-10 lg:mb-1 p-4 py-6 justify-center">
         {AiResponse === "negative" && (
-          <div className="absolute bg-white w-full  h-full z-10">
+          <div className="absolute flex items-center justify-center bg-white w-full  h-full z-20">
             <Result
               status="success"
               title="Successfully Analyzed the image "
@@ -147,7 +146,7 @@ export default function UploadImage() {
                 <Button type="primary" key="console">
                   <Link to="/SkinProducts">Buy Skin care Products</Link>
                 </Button>,
-                <Button key="buy">Buy Again</Button>,
+                // <Button key="buy">Buy Again</Button>,
               ]}
             />
           </div>
@@ -178,7 +177,7 @@ export default function UploadImage() {
               onChange={(event) => handleFileSelection(event)}
             />
             <p className="py-2 text-White sm:text-3xl text-base my-2 font-semibold px-2 sm:px-4">
-              Drop your files here!
+              Drop your image here!
             </p>
             {image && (
               <div className="mt-2 flex">

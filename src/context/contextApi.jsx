@@ -9,18 +9,30 @@ const UserProvider = ({ children }) => {
   const [userRole, setUserRole] = useState(
    
   );
+  const [cart, setCart] = useState(0);
   const [userToken, setUserToken] = useState("");
+
+  function handleAddCart(){
+    setCart(prev=>prev+1)
+
+  }
+  function handleRemoveCart(){
+    if(!cart== 0){
+    setCart(prev=>prev-1)}
+
+  }
 
   useEffect(() => {
     const storedUserRole = localStorage.getItem("userRole") === "true";
     setUserRole(storedUserRole);
     console.log("from contextapi useEffect: ", storedUserRole);
     console.log("userRole: ", userRole);
+   
   }, []);
 
   return (
     <UserContext.Provider
-      value={{ userRole, setUserRole, userToken, setUserToken }}
+      value={{ userRole, setUserRole, userToken, setUserToken ,cart,setCart,handleAddCart,handleRemoveCart }}
     >
       {children}
     </UserContext.Provider>

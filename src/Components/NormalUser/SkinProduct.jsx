@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Api from "../ProtectRoute/Api";
 import Navbarr from "../Navbarr";
+import FeatureProducts from "../../utils/FeatureProducts";
+import { UserContext } from "../../context/contextApi";
 
 export default function Product() {
   const { id } = useParams(); // Accessing the product ID from the URL
   const [productData, setProduct] = useState(null);
   const navigate = useNavigate();
+  const { cart, setCart, handleAddCart } = useContext(UserContext);
 
   useEffect(() => {
     async function fetchProduct() {
@@ -92,7 +95,10 @@ export default function Product() {
             </p>
           </div>
           <div className="mt-6">
-            <button className="btn !w-full text-secondary-foreground hover:bg-secondary/80 py-2 px-4 rounded-lg">
+            <button
+              className="btn !w-full text-secondary-foreground hover:bg-secondary/80 py-2 px-4 rounded-lg "
+              onClick={handleAddCart}
+            >
               ADD TO BOX - {productData.price} Pkr
             </button>
           </div>
@@ -117,7 +123,7 @@ export default function Product() {
           </h2>
         </div>
       </div>
-      product list
+      <FeatureProducts />
     </>
   );
 }
