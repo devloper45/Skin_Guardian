@@ -11,11 +11,7 @@ import LandingPage from "./Components/LandingPage";
 import Pricing from "./Components/Pricing";
 
 import { UserProvider } from "./context/contextApi.jsx";
-// import UploadFile from "./Components/NormalUser/UploadOrTakeImage.jsx";
-// import UploadFileTemplate from "./Components/UploadFileTemplate.jsx";
-import PReportTemplate from "./Components/Docter/PReportTemplate.jsx";
-import PReportTemplateOption from "./Components/Docter/PReportTemplateOption.jsx";
-import PUploadFile from "./Components/Docter/PUploadFile.jsx";
+
 import Auth from "./Components/ProtectRoute/auth.jsx";
 import ConsultDermatologist from "./Components/NormalUser/ConsultDermatologist.jsx";
 import ConsultCancerSpecialist from "./Components/NormalUser/ConsultCancerSpecialist.jsx";
@@ -26,6 +22,7 @@ import UploadImage from "./Components/NormalUser/UploadImage.jsx";
 import ShoppingCart from "./Components/NormalUser/ShoppingCart.jsx";
 import SignUpDocter from "./Components/Accounts/SignUpDocter.jsx";
 import LoginDocter from "./Components/Accounts/LoginDocter.jsx";
+import DocterDashboard from "./Components/Docter/DocterDashboard.jsx";
 
 function App() {
   return (
@@ -39,7 +36,8 @@ function App() {
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/" element={<LandingPage />} />
             <Route path="/SkinProducts" element={<SkinWellness />} />
-            <Route path="/loginDocter" element={ <LoginDocter/> } />
+            <Route path="/loginDocter" element={<LoginDocter />} />
+            <Route path="/DocterDashboard" element={<DocterDashboard />} />
             <Route
               path="/ConsultDermatologist"
               element={<ConsultDermatologist />}

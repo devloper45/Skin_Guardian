@@ -33,16 +33,13 @@ function SignUp() {
     // if (Object.keys(validationErrors).length === 0) {
     try {
       const url = `${ApiBaseUrl}/user`;
-      const response = await fetch(
-        "https://fyp-production-c71f.up.railway.app/v1/api/user",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(inputValue),
-        }
-      );
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputValue),
+      });
 
       if (!response.ok) {
         throw new Error("Sign-up request failed");
@@ -85,7 +82,7 @@ function SignUp() {
             <form onSubmit={handlefreeSignup}>
               <div className=" flex ">
                 <input
-                  className="input mr-1 border border-gray-50"
+                  className="input mr-1 border border-gray-300"
                   type="text"
                   placeholder="First Name"
                   name="firstName"
@@ -93,7 +90,7 @@ function SignUp() {
                   onChange={onChangeHandler}
                 />
                 <input
-                  className="input"
+                  className="input border border-gray-300"
                   type="text"
                   placeholder="Last Name"
                   name="lastName"
@@ -104,7 +101,7 @@ function SignUp() {
               </div>
 
               <input
-                className="input"
+                className="input border border-gray-300"
                 type="email"
                 placeholder="Email"
                 name="email"
@@ -114,7 +111,7 @@ function SignUp() {
 
               {error.email && <p className="error">{error.email}</p>}
 
-              <div className=" flex  bg-white rounded-xl my-2 ">
+              <div className=" flex border border-gray-300  bg-white rounded-xl my-2 ">
                 <input
                   className=" bg-white rounded-xl  p-1 w-full sm:p-2 outline-none text-black"
                   type={showPassword ? "text" : "password"}
@@ -144,7 +141,7 @@ function SignUp() {
                   />
                 </svg>
               </div>
-              <div className=" flex  bg-white rounded-xl my-2 ">
+              <div className=" flex  bg-white border border-gray-300 rounded-xl my-2 ">
                 <input
                   className=" bg-white rounded-xl  p-1 w-full sm:p-2 outline-none text-black"
                   type={showPassword ? "text" : "password"}
@@ -175,10 +172,16 @@ function SignUp() {
                 </svg>
               </div>
               {error.password && <p className="error">{error.password}</p>}
-              <button type="submit" className="btn">
+              <button
+                type="submit"
+                className="btn text-white !bg-blue-600 !hover:bg-blue-700 focus:outline-none"
+              >
                 Sign Up for free
               </button>
-              <button className="btn" onClick={() => navigate("/SignUpDocter")}>
+              <button
+                className="btn text-white !bg-blue-600 !hover:bg-blue-700 focus:outline-none"
+                onClick={() => navigate("/SignUpDocter")}
+              >
                 Sign Up As Docter
               </button>
             </form>

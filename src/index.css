@@ -37,7 +37,7 @@
     @apply md:text-sm text-xs font-medium text-InputColorHover;
   }
   .input {
-    @apply bg-white  border border-gray-50 rounded-xl sm:p-2 p-1 w-full my-2 outline-none text-black;
+    @apply bg-white  border border-gray-300 rounded-xl sm:p-2 p-1 w-full my-2 outline-none text-black;
   }
   .tag-line {
     @apply text-center md:text-sm text-xs py-2 font-medium text-InputColorHover pb-4;
