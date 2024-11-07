@@ -6,7 +6,7 @@ export default function Logout() {
     const refresh = localStorage.getItem("refresh");
 
     if (!refresh) {
-      alert("No refresh token found");
+      // alert("No refresh token found");
       localStorage.clear();
       window.location.href = "/Login";
 

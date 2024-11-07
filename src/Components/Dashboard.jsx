@@ -63,12 +63,12 @@ export default function Dashboard() {
           className={`flex overflow-auto w-full  transition-all duration-300`}
         >
           <div className="bg-background text-White  flex flex-col items-start p-6  bg-center bg-cover bg-no-repeat min-h-screen w-full">
-            <section class=" dark:bg-gray-900">
-              <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
-                <h1 class="mb-4 text-4xl mx-28 px-5  font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+            <section className=" dark:bg-gray-900">
+              <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
+                <h1 className="mb-4 text-4xl mx-28 px-5  font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
                   AI-Powered Skin Cancer Detection and Wellness Recommendations
                 </h1>
-                <p class="mb-8 text-lg  mt-12 font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
+                <p className="mb-8 text-lg  mt-12 font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
                   Upload your photo for an AI-based analysis. Our system will
                   check for signs of skin cancer. If you're clear, we'll
                   recommend top skin wellness products. If there's a concern,
@@ -104,7 +104,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center gap-6 md:gap-14 my-12 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center gap-6 md:gap-14 my-12 ">
               {/* Item 1 */}
               <div
                 onClick={() => handleTemplate("/ConsultDermatologist")}

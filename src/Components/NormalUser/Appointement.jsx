@@ -1,35 +1,73 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useCloseRef } from "../../hooks/useCloseRef";
 import toast from "react-hot-toast";
 import Api from "../ProtectRoute/Api";
-export default function Appointement({ setOpenAppointementModel, docterName,docterID }) {
+
+export default function Appointement({ setOpenAppointementModel, docter }) {
+  const [doctorr, setDocter] = useState("");
+  const [nextTenDates, setNextTenDates] = useState([]);
+  const [timeSlot, setTimeSlots] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectDateTime, setSelectDateTime] = useState(false);
+
   const AppointementModeRef = useRef(null);
   useCloseRef(AppointementModeRef, setOpenAppointementModel);
-  console.log(docterName + "hrhehe");
 
- function  handleApointment(){
-  toast.success("Appointment booked successfully")
-  setOpenAppointementModel(false)
- }
+  async function handleApointment(time) {
+    const formData = new FormData();
+    formData.append("appointmentDate", selectedDate);
+    formData.append("timeSlot", time);
+    formData.append("docterId", docter.id);
 
- useEffect(()=>{
-  async function handleDocterDetail() {
-    const response = await Api.get(`/docter/${docterID}`)
-    
+    try {
+      const response = await Api.post(`/appointment`, formData);
+      toast.success("Appointment booked successfully");
+      setOpenAppointementModel(false);
+    } catch (error) {
+      toast.error("Failed to book appointment. Please try again.");
+    }
   }
-  handleDocterDetail()
- },[])
+
+  useEffect(() => {
+    async function handleDocterDetail() {
+      setDocter(docter);
+      await Api.get(`/doctor/${docter.id}`);
+    }
+
+    function generateNextTenDates() {
+      const dates = [];
+      const today = new Date();
+      for (let i = 0; i < 10; i++) {
+        const futureDate = new Date(today);
+        futureDate.setDate(today.getDate() + i);
+        dates.push(futureDate.toISOString().split("T")[0]);
+      }
+      setNextTenDates(dates);
+    }
+
+    generateNextTenDates();
+    handleDocterDetail();
+  }, [docter]);
+
+  async function handleTimeApi(date) {
+    try {
+      const response = await Api.get(`/doctor/time/${docter.id}/${date}`);
+      const timeSlots = response.data.data;
+      setTimeSlots(timeSlots);
+      setSelectedDate(date);
+      setSelectDateTime(true);
+    } catch (error) {
+      toast.error("Failed to fetch available time slots.");
+    }
+  }
 
   return (
-    <div
-      className=" bg-black/70 z-20 flex justify-center items-center top-0 left-0
-   absolute w-full h-full"
-    >
+    <div className="bg-black/70 z-20 flex justify-center items-center top-0 left-0 absolute w-full h-full">
       <div
         ref={AppointementModeRef}
         className="flex flex-col bg-white rounded-lg h-auto w-9/12 relative p-6"
       >
-        <div className=" mx-auto p-6 bg-card rounded-lg shadow-md">
+        <div className="mx-auto p-6 bg-card rounded-lg shadow-md">
           <div className="flex items-center mb-4">
             <img
               src="https://placehold.co/100x100"
@@ -37,7 +75,9 @@ export default function Appointement({ setOpenAppointementModel, docterName,doct
               className="rounded-full mr-4"
             />
             <div>
-              <h2 className="text-xl font-bold">Dr. {docterName}</h2>
+              <h2 className="text-xl font-bold">
+                Dr. {doctorr.firstName} {doctorr.lastName}
+              </h2>
               <p className="text-muted-foreground">
                 Skin Guardian Video Consultation (Online)
               </p>
@@ -51,39 +91,41 @@ export default function Appointement({ setOpenAppointementModel, docterName,doct
           <div className="mt-6">
             <h3 className="text-lg font-semibold">Select Date</h3>
             <div className="flex space-x-2 mt-2">
-              <button className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground">
-                Nov. 01
-              </button>
-              <button className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground">
-                Nov. 02
-              </button>
-              <button className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground">
-                Nov. 03
-              </button>
-              <button className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground">
-                Nov. 04
-              </button>
+              {nextTenDates.map((date, index) => (
+                <button
+                  key={index}
+                  className="px-4 py-2 border rounded hover:bg-primary hover:text-primary-foreground"
+                  onClick={() => handleTimeApi(date)}
+                >
+                  {new Date(date).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </button>
+              ))}
             </div>
           </div>
+
           <div className="mt-6">
             <h3 className="text-lg font-semibold">Available Slots</h3>
-            <div
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2"
-              onClick={handleApointment}
-            >
-              <button className="bg-orange-200 text-black py-2 rounded">
-                01:15 PM
-              </button>
-              <button className="py-2 border rounded">01:35 PM</button>
-              <button className="py-2 border rounded">01:55 PM</button>
-              <button className="py-2 border rounded">02:15 PM</button>
-              <button className="py-2 border rounded">02:35 PM</button>
-              <button className="py-2 border rounded">03:15 PM</button>
-              <button className="py-2 border rounded">03:35 PM</button>
-              <button className="py-2 border rounded">03:55 PM</button>
-              <button className="py-2 border rounded">04:15 PM</button>
-              <button className="py-2 border rounded">04:35 PM</button>
-              <button className="py-2 border rounded">04:55 PM</button>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2">
+              {selectDateTime ? (
+                timeSlot.length > 0 ? (
+                  timeSlot.map((time, idx) => (
+                    <button
+                      key={idx}
+                      className="bg-orange-200 text-black py-2 rounded"
+                      onClick={() => handleApointment(time)}
+                    >
+                      {time}
+                    </button>
+                  ))
+                ) : (
+                  <p className="text-red-500">No Time Slot Available</p>
+                )
+              ) : (
+                <p className="text-gray-500">Please select a date first</p>
+              )}
             </div>
           </div>
         </div>

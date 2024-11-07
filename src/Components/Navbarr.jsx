@@ -19,6 +19,7 @@ const navigation = [
   { name: "Consultation", href: "/ConsultCancerDocter" },
   { name: "Upload", href: "/UploadImage" },
   { name: "Products", href: "/SkinProducts" },
+  {name : "Appointments",href:"/Appointments"},
 ];
 
 function classNames(...classes) {
