@@ -29,7 +29,7 @@ export default function AHAppointments() {
     handleActiveAppointments();
     handleRecentAppointments();
   }, []);
-
+  async function handleAppointmentStatus() {}
   return (
     <div>
       <Navbarr />
@@ -55,6 +55,7 @@ export default function AHAppointments() {
                   <th className="px-4 py-2">Date</th>
                   <th className="px-4 py-2">Time</th>
                   <th className="px-4 py-2">Status</th>
+                  <th className="px-4 py-2">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -62,7 +63,7 @@ export default function AHAppointments() {
                   activeAppointments.map((appointment, index) => (
                     <tr key={index} className="text-center">
                       <td className="px-4 py-2">
-                        {"Dr." +
+                        {"Dr. " +
                           appointment.doctor.firstName +
                           " " +
                           appointment.doctor.lastName}
@@ -75,6 +76,14 @@ export default function AHAppointments() {
                         <div>{appointment.status}</div>
 
                         <div></div>
+                      </td>
+                      <td className="px-4 py-2">
+                        <button
+                          onClick={handleAppointmentStatus}
+                          className=" bg-red-500 text-white rounded-md p-2 mx-1 hover:bg-red-400 hover:underline hover:underline-offset-2"
+                        >
+                          Cancel
+                        </button>
                       </td>
                     </tr>
                   ))

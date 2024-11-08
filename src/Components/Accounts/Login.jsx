@@ -87,7 +87,6 @@ function Login() {
           </div>
         </div>
 
-       
         <div className="bg-gray-50   font-[sans-serif]">
           <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
             <div className="max-w-md w-full">
@@ -222,6 +221,14 @@ function Login() {
                       className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                     >
                       Register here
+                    </a>
+                  </p>
+                  <p className="text-gray-800 text-sm !mt-8 text-center">
+                    <a
+                      href="/loginDocter"
+                      className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
+                    >
+                      Login As a Doctor
                     </a>
                   </p>
                 </form>

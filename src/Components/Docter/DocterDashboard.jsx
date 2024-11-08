@@ -68,6 +68,9 @@ export default function DoctorDashboard() {
                       Appointment Time
                     </th>
                     <th className="px-6 py-3 font-semibold">Status</th>
+                    <th className="px-6 py-3 font-semibold text-center">
+                      Action
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -88,6 +91,14 @@ export default function DoctorDashboard() {
                         </td>
                         <td className="px-6 py-4 text-gray-700">
                           {appointment.status}
+                        </td>
+                        <td className="px-6 py-4 text-gray-700">
+                          <button className=" bg-green-500 text-white rounded-md p-2 mx-1 hover:bg-green-400 hover:underline hover:underline-offset-2">
+                            Approve
+                          </button>
+                          <button className=" bg-red-500 text-white rounded-md p-2 mx-1 hover:bg-red-400 hover:underline hover:underline-offset-2">
+                            Cancel
+                          </button>
                         </td>
                       </tr>
                     ))
