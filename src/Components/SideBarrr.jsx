@@ -19,9 +19,9 @@ export default function SideBarrr({ openBar, setOpenBar }) {
   console.log("user role in sidebarr " + userRole);
   const NavBarData = [
     {
-      name: "Skin Wellness",
-      stateKey: "SkinWellness",
-      path: "/SkinProducts",
+      name: "Dashboard",
+      stateKey: "DocterDashboard",
+      path: "/DocterDashboard",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -40,9 +40,9 @@ export default function SideBarrr({ openBar, setOpenBar }) {
       ),
     },
     {
-      name: "Skin Consultation",
-      path:  "/ConsultCancerDocter",
-      stateKey: "Consult CancerDocter",
+      name: "Profile",
+      path: "/DoctorProfile",
+      stateKey: "DoctorProfile",
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,31 +60,7 @@ export default function SideBarrr({ openBar, setOpenBar }) {
         </svg>
       ),
     },
-   
-    {
-      name: "Upload Photo",
-      stateKey: "UploadFileTemplate",
-      path: "",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="size-4"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
-          />
-        </svg>
-      ),
-    },
   ];
-
- 
 
   const handleDropup = () => {
     setDropDown((prevState) => !prevState);
@@ -103,41 +79,73 @@ export default function SideBarrr({ openBar, setOpenBar }) {
     };
   }, []);
 
-  async function handlePremium() {
-    const stripeid = localStorage.getItem("stripeid");
-    try {
-      const premiumResponse = await fetch(
-        `http://127.0.0.1:8000/stripe-checkout/${stripeid}/`,
-        {
-          method: "GET",
-        }
-      );
+  // async function handlePremium() {
+  //   const stripeid = localStorage.getItem("stripeid");
+  //   try {
+  //     const premiumResponse = await fetch(
+  //       `http://127.0.0.1:8000/stripe-checkout/${stripeid}/`,
+  //       {
+  //         method: "GET",
+  //       }
+  //     );
 
-      if (!premiumResponse.ok) {
-        throw new Error("Premium subscription request failed");
-      } else {
-        // localStorage.setItem("userRole", false);
-      }
-      console.log(premiumResponse);
+  //     if (!premiumResponse.ok) {
+  //       throw new Error("Premium subscription request failed");
+  //     } else {
+  //       // localStorage.setItem("userRole", false);
+  //     }
+  //     console.log(premiumResponse);
 
-      const result2 = await premiumResponse.json();
+  //     const result2 = await premiumResponse.json();
 
-      if (!result2?.url) {
-        // alert("Error in stripe checkout");
-        toast.error("Error in stripe checkout");
-      }
+  //     if (!result2?.url) {
+  //       // alert("Error in stripe checkout");
+  //       toast.error("Error in stripe checkout");
+  //     }
 
-      console.log("Premium subscription successful:", result2);
-      alert("Check your email for confirmation and premium benefits.");
-      window.location = result2.url;
-      localStorage.clear();
-      navigate("/Login");
-    } catch (error) {
-      console.error("Error with premium subscription:", error);
-      alert("An error occurred with premium subscription.");
+  //     console.log("Premium subscription successful:", result2);
+  //     alert("Check your email for confirmation and premium benefits.");
+  //     window.location = result2.url;
+  //     localStorage.clear();
+  //     navigate("/Login");
+  //   } catch (error) {
+  //     console.error("Error with premium subscription:", error);
+  //     alert("An error occurred with premium subscription.");
+  //   }
+  // }
+  const handleNavClick = (path) => {
+    //console.log(userRole);
+    //console.log("Checking the condition here ", path);
+    if (path === "" && userRole) {
+      toast.custom((t) => (
+        <div
+          className={`${
+            t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="mt-1 text-sm text-gray-500">
+                  Upgrade to Premium to avail this feature
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-green-800 hover:text-InputColor focus:outline-none focus:ring-2 focus:ring-InputColor"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ));
+    } else {
+      navigate(path);
     }
-  }
-
+  };
   return (
     <>
       <div className="fixed z-10">
@@ -185,14 +193,14 @@ export default function SideBarrr({ openBar, setOpenBar }) {
                   Log Out
                 </button> */}
                 <Logout />
-                {userRole === true && (
+                {/* {userRole === true && (
                   <button
                     onClick={handlePremium}
                     className="block w-full text-left px-4 z-20 hover:cursor-pointer py-2 text-gray-700 hover:bg-gray-100"
                   >
                     Premium
                   </button>
-                )}
+                )} */}
                 <button
                   // onClick={}
                   className="block w-full text-left px-4 z-20 hover:cursor-pointer py-2 text-gray-700 hover:bg-gray-100"

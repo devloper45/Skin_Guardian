@@ -8,8 +8,9 @@ export default function AHAppointments() {
 
   async function handleActiveAppointments() {
     try {
-      const response = await Api.get(`/appointment/active`);
-      setActiveAppointments(response.data); // Assuming data is an array of active appointments
+      const response = await Api.get(`/appointment`);
+      console.log(response.data.data);
+      setActiveAppointments(response.data.data); // Assuming data is an array of active appointments
     } catch (error) {
       console.error("Error fetching active appointments:", error);
     }
@@ -50,7 +51,7 @@ export default function AHAppointments() {
             <table className="table-auto w-full border border-gray-300">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="px-4 py-2">Doctor</th>
+                  <th className="px-4 py-2">Doctor Name</th>
                   <th className="px-4 py-2">Date</th>
                   <th className="px-4 py-2">Time</th>
                   <th className="px-4 py-2">Status</th>
@@ -60,11 +61,20 @@ export default function AHAppointments() {
                 {activeAppointments.length > 0 ? (
                   activeAppointments.map((appointment, index) => (
                     <tr key={index} className="text-center">
-                      <td className="px-4 py-2">{appointment.doctorName}</td>
-                      <td className="px-4 py-2">{appointment.date}</td>
-                      <td className="px-4 py-2">{appointment.time}</td>
+                      <td className="px-4 py-2">
+                        {"Dr." +
+                          appointment.doctor.firstName +
+                          " " +
+                          appointment.doctor.lastName}
+                      </td>
+                      <td className="px-4 py-2">
+                        {appointment.appointmentDate}
+                      </td>
+                      <td className="px-4 py-2">{appointment.timeSlot}</td>
                       <td className="px-4 py-2 text-green-500">
-                        {appointment.status}
+                        <div>{appointment.status}</div>
+
+                        <div></div>
                       </td>
                     </tr>
                   ))

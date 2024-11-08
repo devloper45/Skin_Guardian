@@ -14,13 +14,13 @@ export default function Appointement({ setOpenAppointementModel, docter }) {
   useCloseRef(AppointementModeRef, setOpenAppointementModel);
 
   async function handleApointment(time) {
-    const formData = new FormData();
-    formData.append("appointmentDate", selectedDate);
-    formData.append("timeSlot", time);
-    formData.append("docterId", docter.id);
-
     try {
-      const response = await Api.post(`/appointment`, formData);
+      const response = await Api.post(`/appointment`, {
+        appointmentDate: selectedDate,
+        timeSlot: time,
+        doctorId: docter.id,
+      });
+      console.log("hello response : ", response);
       toast.success("Appointment booked successfully");
       setOpenAppointementModel(false);
     } catch (error) {

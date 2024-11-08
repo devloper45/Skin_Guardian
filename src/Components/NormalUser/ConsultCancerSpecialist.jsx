@@ -34,7 +34,7 @@ const DoctorCard = ({ doctor, setDocter, setOpenAppointementModel }) => (
       />
       <div>
         <h2 className="text-lg font-bold">
-          {doctor.firstName} {doctor.lastName}
+          {"Dr. " + doctor.firstName} {doctor.lastName}
         </h2>
         <p className="text-muted-foreground">
           {doctor.specialization.join(", ")}

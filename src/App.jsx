@@ -24,6 +24,7 @@ import SignUpDocter from "./Components/Accounts/SignUpDocter.jsx";
 import LoginDocter from "./Components/Accounts/LoginDocter.jsx";
 import DocterDashboard from "./Components/Docter/DocterDashboard.jsx";
 import AHAppointments from "./Components/NormalUser/AHAppointments.jsx";
+import DocterProfile from "./Components/Docter/DocterProfile.jsx";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             <Route path="/skinproduct/:id" element={<Product />} />
             <Route path="/ShoppingCart" element={<ShoppingCart />} />
             <Route path="/Appointments" element={<AHAppointments />} />
+            <Route path="/DoctorProfile" element={<DocterProfile />} />
 
             <Route path="/Product" element={<MyProduct />} />
             <Route path="/SignUp" element={<SignUp />} />
