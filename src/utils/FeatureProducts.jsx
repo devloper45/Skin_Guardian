@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function FeatureProducts() {
   const [products, setProducts] = useState([]); // State to hold products data
-  
+
   async function getProductsListFromBackend() {
     console.log("from product function");
     try {

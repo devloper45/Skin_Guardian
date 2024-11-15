@@ -4,12 +4,14 @@ import Api from "../ProtectRoute/Api";
 import Navbarr from "../Navbarr";
 import FeatureProducts from "../../utils/FeatureProducts";
 import { UserContext } from "../../context/contextApi";
+import { useCart } from "../../context/CartContext";
 
 export default function Product() {
   const { id } = useParams(); // Accessing the product ID from the URL
   const [productData, setProduct] = useState(null);
   const navigate = useNavigate();
   const { cart, setCart, handleAddCart } = useContext(UserContext);
+  const { addItemToCart } = useCart();
 
   useEffect(() => {
     async function fetchProduct() {
@@ -97,7 +99,8 @@ export default function Product() {
           <div className="mt-6">
             <button
               className="btn !w-full text-secondary-foreground hover:bg-secondary/80 py-2 px-4 rounded-lg "
-              onClick={handleAddCart}
+              // onClick={handleAddCart}
+              onClick={()=>addItemToCart(productData)}
             >
               ADD TO BOX - {productData.price} Pkr
             </button>

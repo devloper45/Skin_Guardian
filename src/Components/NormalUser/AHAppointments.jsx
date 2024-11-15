@@ -1,3 +1,5 @@
+// Active and Recent Appointments
+
 import React, { useEffect, useState } from "react";
 import Navbarr from "../Navbarr";
 import Api from "../ProtectRoute/Api";
@@ -144,57 +146,3 @@ export default function AHAppointments() {
     </div>
   );
 }
-
-// Active and Recent Appointments
-// import React, { useEffect, useState } from "react";
-// import Navbarr from "../Navbarr";
-// import Api from "../ProtectRoute/Api";
-
-// export default function AHAppointments() {
-
-//    async function handleActiveAppointments(){
-//     const response = await Api.get(`/appointment`)
-//    }
-//    async function handleRecentAppointments(){}
-
-//    useEffect(()=>{
-//     handleActiveAppointments(
-//     );
-//     handleRecentAppointments();
-//    },[])
-//   return (
-//     <div>
-//       <Navbarr />
-
-//       <div>
-//         {" "}
-//         <header className="bg-blue-100 py-10">
-//           <div className="container mx-auto text-center">
-//             <h1 className="text-4xl font-extrabold text-primary">
-//               Appointments Dashboard
-//             </h1>
-//             <p className="text-lg text-muted-foreground mt-4">
-//               Manage your active and recent appointments.
-//             </p>
-//           </div>
-//         </header>
-//         <section>
-//           <h1>Active Appointments</h1>
-//           <div>
-//             <table className="table-auto w-full">
-//               <thead></thead>
-//             </table>
-//           </div>
-//         </section>
-//         <section>
-//           <h1>Recent Appointments</h1>
-//           <div>
-//             <table className="table-auto w-full">
-//               <thead></thead>
-//             </table>
-//           </div>
-//         </section>
-//       </div>
-//     </div>
-//   );
-// }

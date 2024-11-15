@@ -3,12 +3,14 @@ import Navbarr from "../Navbarr";
 import Api from "../ProtectRoute/Api";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/contextApi";
+import { useCart } from "../../context/CartContext";
 const SkinWellness = () => {
   const [products, setProducts] = useState([]); // State to hold products data
 
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
   const { cart, setCart, handleAddCart } = useContext(UserContext);
+  const { addItemToCart } = useCart();
 
   const handleAddToCart = (product) => {
     // setCart([...cart, product]);
@@ -136,7 +138,7 @@ const SkinWellness = () => {
                 </button>
                 <button
                   className="bg-primary  text-white hover:bg-primary/80 p-2 rounded"
-                  onClick={() => handleAddToCart(product)}
+                  onClick={() => addItemToCart(product)}
                 >
                   Add to Cart
                 </button>
