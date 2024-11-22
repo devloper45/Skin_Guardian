@@ -14,7 +14,7 @@ const SkinWellness = () => {
 
   const handleAddToCart = (product) => {
     // setCart([...cart, product]);
-    // navigate('/ShoppingCart')
+    // navigate('/ShoppingCart')sett 
     handleAddCart();
   };
   const handleBuyNow = (product) => {

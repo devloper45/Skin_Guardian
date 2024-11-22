@@ -31,7 +31,20 @@ export default function AHAppointments() {
     handleActiveAppointments();
     handleRecentAppointments();
   }, []);
-  async function handleAppointmentStatus() {}
+  async function handleAppointmentStatus(appointmentId) {
+    try {
+      await Api.delete(`/appointment/${appointmentId}`);
+      console.log(`Appointment ${appointmentId} status updated`);
+
+      handleActiveAppointments();
+      handleRecentAppointments();
+    } catch (error) {
+      console.error(
+        `Error updating appointment ${appointmentId} status:`,
+        error
+      );
+    }
+  }
   return (
     <div>
       <Navbarr />
@@ -81,7 +94,9 @@ export default function AHAppointments() {
                       </td>
                       <td className="px-4 py-2">
                         <button
-                          onClick={handleAppointmentStatus}
+                          onClick={() =>
+                            handleAppointmentStatus(appointment.id)
+                          }
                           className=" bg-red-500 text-white rounded-md p-2 mx-1 hover:bg-red-400 hover:underline hover:underline-offset-2"
                         >
                           Cancel

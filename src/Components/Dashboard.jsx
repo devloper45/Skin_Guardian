@@ -19,8 +19,6 @@ export default function Dashboard() {
     navigate(path);
   }
 
- 
-
   async function handlePremium() {
     const stripeid = localStorage.getItem("stripeid");
     try {
@@ -58,7 +56,6 @@ export default function Dashboard() {
       <Navbarr />
 
       <div className="flex    overflow-hidden text-White w-full">
-        
         <div
           className={`flex overflow-auto w-full  transition-all duration-300`}
         >
@@ -91,12 +88,12 @@ export default function Dashboard() {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                   className="h-8 w-8 animated-move-down"
                 >
                   <path
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     stroke-linejoin="round"
                     d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5"
                   />
@@ -107,7 +104,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center gap-6 md:gap-14 my-12 ">
               {/* Item 1 */}
               <div
-                onClick={() => handleTemplate("/ConsultDermatologist")}
+                onClick={() => alert("Feature Coming Soon!")}
                 className="mx-2 p-6 flex bg-[#77ccee] rounded-lg shadow-lg"
               >
                 <div>
@@ -124,12 +121,12 @@ export default function Dashboard() {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     className="h-9 w-9"
                   >
                     <path
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                     />
@@ -156,12 +153,12 @@ export default function Dashboard() {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     className="h-9 w-9"
                   >
                     <path
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                     />
@@ -188,12 +185,12 @@ export default function Dashboard() {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     className="h-9 w-9"
                   >
                     <path
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                     />

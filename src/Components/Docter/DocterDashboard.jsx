@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Api from "../ProtectRoute/Api";
-import SideBarrr from "../SideBarrr";
+import SideBar from "./SideBar";
+import Headers from "./Headers";
+// import SideBarrr from "../SideBarrr";
 
 export default function DoctorDashboard() {
   const [appointments, setAppointments] = useState([]); // Initialize as an empty array
@@ -58,19 +60,20 @@ export default function DoctorDashboard() {
   return (
     <div className="flex flex-row w-full h-screen">
       {/* Sidebar */}
-      <SideBarrr openBar={openBar} setOpenBar={setOpenBar} />
+      <SideBar openBar={openBar} setOpenBar={setOpenBar} />
 
       {/* Main Content */}
       <div
-        className={`flex-1 transition-all duration-300 ${
-          openBar ? "ml-52" : "ml-10"
+        className={`flex-1 bg-gray-50 transition-all duration-300 ${
+          openBar ? "ml-44" : "ml-16"
         } overflow-auto`}
       >
         {openBar && (
           <div className="fixed w-full h-full top-0 left-0 bg-black bg-opacity-50 z-10 md:hidden"></div>
         )}
+        <Headers />
 
-        <div className="p-8 mx-5">
+        <div className="p-8 mx-5 mt-16">
           {/* Dashboard Header */}
           <div className="flex justify-center mb-8">
             <h1 className="text-4xl font-bold text-gray-800">
@@ -106,7 +109,7 @@ export default function DoctorDashboard() {
                     appointments.map((appointment, index) => (
                       <tr
                         key={index}
-                        className="hover:bg-gray-100 border-b border-gray-200 transition-all"
+                        className="hover:bg-gray-100 border-bb border-gray-200 transition-all"
                       >
                         <td className="px-6 py-4 text-gray-700">
                           {appointment.user.firstName}{" "}

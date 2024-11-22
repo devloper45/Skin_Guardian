@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam"; // Assuming you're using react-webcam for capturing photos
 import document from "../../assets/document.png";
 import Api from "../ProtectRoute/Api";
-import { Button, Result } from "antd";
+import { Button, Result, Progress } from "antd";
 import { Link } from "react-router-dom";
 import Navbarr from "../Navbarr";
 export default function UploadImage() {
@@ -10,6 +10,7 @@ export default function UploadImage() {
   const [image, setImage] = useState(null);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
   const [fileIsUploading, setFileIsUploading] = useState(false);
+  const [viewReport,setViewReport]=useState(false)
 
   const webcamRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -64,14 +65,14 @@ export default function UploadImage() {
       const height = imageObject.height;
       const megapixels = (width * height) / 1000000;
 
-      if (megapixels >= 12) {
-        setImage(URL.createObjectURL(file));
+      // if (megapixels >= 12) {
+      setImage(URL.createObjectURL(file));
 
-        picToBackend(file);
-      } else {
-        setErrorMessage("Image must be at least 12 megapixels.");
-        setImage(null);
-      }
+      picToBackend(file);
+      // } else {
+      //   setErrorMessage("Image must be at least 12 megapixels.");
+      //   setImage(null);
+      // }
     };
     imageObject.src = URL.createObjectURL(file);
   }
@@ -84,15 +85,17 @@ export default function UploadImage() {
 
       const response = await Api.post("/user/image", formData);
 
-      if (response.status === 201) {
+      if (response.data.data.title) {
         setErrorMessage("");
         setFileIsUploading(false);
-        setResponse("negative");
+        setResponse(response.data.data);
+        console.log("reponse after succeess", response.data);
 
         // alert("Image uploaded successfully!");
       } else {
         setFileIsUploading(false);
         setErrorMessage("Failed to upload image.");
+        console.log("reponse", response.data);
       }
     } catch (error) {
       setFileIsUploading(false);
@@ -136,21 +139,81 @@ export default function UploadImage() {
         </div>
       )}
       <div className="sm:mb-16 md:mb-10 lg:mb-1 p-4 py-6 justify-center">
-        {AiResponse === "negative" && (
-          <div className="absolute flex items-center justify-center bg-white w-full  h-full z-20">
+        {AiResponse?.title ? (
+          <div className="absolute flex flex-col items-center justify-center bg-white w-full h-full z-20">
             <Result
-              status="success"
-              title="Successfully Analyzed the image "
-              subTitle="Congratulations ! No cancer found"
+              status={
+                AiResponse.title === "NON-INFECTED" ? "success" : "warning"
+              }
+              title={
+                AiResponse.title === "NON-INFECTED"
+                  ? "Successfully Analyzed the Image"
+                  : ` Attention: Analysis indicates an issue. 
+                  ${AiResponse.title}`
+              }
+              subTitle={
+                AiResponse.title === "NON-INFECTED"
+                  ? "Congratulations! No cancer found."
+                  : ` Click View Button to see the analysis result `
+              }
               extra={[
+                //   <p key="info" className="text-gray-600">
+                //   Early detection can save lives. Please consult a certified dermatologist
+                //   for a detailed diagnosis and treatment plan.
+                // </p>
                 <Button type="primary" key="console">
-                  <Link to="/SkinProducts">Buy Skin care Products</Link>
+                  <Link
+                    to={
+                      AiResponse.title === "NON-INFECTED"
+                        ? `/SkinProducts`
+                        : "/ConsultCancerDocter"
+                    }
+                  >
+                    {AiResponse.title === "NON-INFECTED"
+                      ? "Buy Skin Care Products"
+                      : "Consult a Doctor"}
+                  </Link>
                 </Button>,
-                // <Button key="buy">Buy Again</Button>,
+                <Button key="upload" onClick={() => setResponse("")}>
+                  Upload Another
+                </Button>,
+              
               ]}
             />
+            <div className=" sm:w-2/3">
+              <div>
+                <h1 className="text-2xl text-center font-bold">Report</h1>
+              </div>
+          
+         
+          <div className="flex justify-between ">
+            <div>
+            <h1>Cancer Type : {AiResponse.title}</h1>
+            <h1>Report ID : {AiResponse.id}</h1>
+
+            </div>
+            <Progress type="circle" percent={AiResponse.percentage} />
+
+     
+
+
           </div>
+          <p className="   w-full mx-4">
+            {`Our analysis indicates signs of a potential skin condition called ${AiResponse.title}.  we strongly recommend consulting with a dermatologist or Skin Cancer specialist for a comprehensive evaluation and appropriate treatment. Early detection and professional guidance are key to managing skin health effectively.`}
+          </p>
+          <p>
+            {AiResponse.description}
+          </p>
+          <p className=" text-red-500">Attention : This is an AI Generated report. Always Consult Docter before taking any meditation</p>
+
+
+        </div>
+          </div>
+        ) : (
+          ""
         )}
+
+        
         <div className="flex flex-col items-center m-3 text-center">
           <h1 className="bold text-4xl m-3">SkinGuardian</h1>
           <p className="text-xl">
@@ -267,251 +330,3 @@ export default function UploadImage() {
     </div>
   );
 }
-
-// import React, { useState, useRef, useEffect } from "react";
-// import document from "../../assets/document.png";
-// import toast from "react-hot-toast";
-// // import MYTooltip from "../../utils/MYTooltip";
-// import Api from "../ProtectRoute/Api";
-// import { Tooltip } from "antd";
-
-// export default function UploadImage() {
-
-//     const [errorMessage, setErrorMessage] = useState("");
-//     const [image, setImage] = useState(null);
-//     const [isTakingPhoto, setIsTakingPhoto] = useState(false);
-//     const webcamRef = useRef(null);
-
-//     const videoConstraints = {
-//       width: 1920,
-//       height: 1080,
-//       facingMode: "user",
-//     };
-
-//     const capture = useCallback(() => {
-//       const imageSrc = webcamRef.current.getScreenshot();
-//       if (imageSrc) {
-//         const imageObject = new Image();
-//         imageObject.onload = function () {
-//           const width = imageObject.width;
-//           const height = imageObject.height;
-//           const megapixels = (width * height) / 1000000;
-
-//           if (megapixels >= 12) {
-//             setImage(imageSrc);
-//             picToBackend(imageSrc);
-//           } else {
-//             setErrorMessage("Image must be at least 12 megapixels.");
-//             setImage(null);
-//           }
-//         };
-//         imageObject.src = imageSrc;
-//       }
-//     }, [webcamRef]);
-
-//     function handleTakePhoto() {
-//       setIsTakingPhoto(true);
-//     }
-//     function handleUpload() {
-//         const fileInput = document.createElement("input");
-//         fileInput.type = "file";
-//         fileInput.accept = "image/*";
-//         fileInput.onchange = handleFileSelection;
-//         fileInput.click();
-//       }
-
-//       async function handleFileSelection(event) {
-//         const file = event.target.files[0];
-//         if (!file) return;
-
-//         const imageObject = new Image();
-//         imageObject.onload = function () {
-//           const width = imageObject.width;
-//           const height = imageObject.height;
-//           const megapixels = (width * height) / 1000000;
-
-//           if (megapixels >= 12) {
-//             setImage(URL.createObjectURL(file));
-//             picToBackend(file);
-//           } else {
-//             setErrorMessage("Image must be at least 12 megapixels.");
-//             setImage(null);
-//           }
-//         };
-//         imageObject.src = URL.createObjectURL(file);
-//       }
-
-//       async function picToBackend(imageFile) {
-//         try {
-
-//           const formData = new FormData();
-//           formData.append("image", imageFile);
-
-//           const response = await Api.post("/user/image", formData);
-
-//           if (response.ok) {
-//             setErrorMessage("");
-//             alert("Image uploaded successfully!");
-//           } else {
-//             setErrorMessage("Failed to upload image.");
-//           }
-//         } catch (error) {
-//           setErrorMessage("An error occurred while uploading.");
-//         }
-//       }
-//     const handleDrop = (e) => {
-//         e.preventDefault();
-//         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-//           handleFileChange({ target: { files: e.dataTransfer.files } });
-//           e.dataTransfer.clearData();
-//         }
-//       };
-
-//       const handleDragOver = (e) => {
-//         e.preventDefault();
-//       };
-
-//   const clearFileHandler = () => {
-//     setFile(null);
-//     setChatButton(false);
-
-//     if (fileInputRef.current) {
-//       fileInputRef.current.value = "";
-//     }
-
-//   };
-//   function handleInnerClose() {
-//     console.log("handle it now ");
-//     setImage(null);
-//     setIsTakingPhoto(false);
-//   }
-//   return (
-//     <div><div className="sm:mb-16 md:mb-10 lg:mb-1   p-4 py-6 justify-center">
-//     <div className="flex flex-col items-center m-3 text-center">
-
-//         <h1 className="bold text-4xl m-3">Your SkinWellness Assistant </h1>
-
-//       <p className="text-xl">Upload your Image </p>
-//       <p className="mb-10">
-//         Get help from your own Personal AI
-//       </p>
-//     </div>
-//     <div className="flex justify-center  mb-4 sm:mb-0">
-//       <div
-//         className="flex  bg-inherit shadow-lg w-full sm:w-3/4 border-dashed border-2 border-white items-center sm:p-10 flex-col px-4 sm:px-20 justify-center h-52 sm:h-auto  text-gray-300 rounded"
-//         onDrop={handleDrop}
-//         onDragOver={handleDragOver}
-//       >
-//         <input
-//           className="hidden"
-//           type="file"
-//           accept=".pdf,.docx,.doc,.txt"
-//           name="file"
-//           id="imageupload"
-//           ref={fileInputRef}
-//           onChange={handleFileChange}
-//         />
-//         <p className="py-2 text-white sm:text-3xl text-base my-2 font-semibold px-2 sm:px-4">
-//           Drop your files here!
-//         </p>
-//         {ChaIsLoading ? (
-//           <div className="animate-spin"></div>
-//         ) : (
-//           <div>
-//             {file && (
-//               <div className="mt-2 flex">
-//                 <p className="text-sm text-white pt-4">{file.name}</p>
-//                 <img
-//                   src={document}
-//                   alt="Preview"
-//                   className="mt-2 text-white rounded-lg h-[40px] w-[40px]"
-//                 />
-//                 <svg
-//                   onClick={clearFileHandler}
-//                   xmlns="http://www.w3.org/2000/svg"
-//                   width="20"
-//                   height="20"
-//                   fill="#ffffff"
-//                   className="bi bi-x text-lg cursor-pointer"
-//                   viewBox="0 0 16 16"
-//                 >
-//                   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-//                 </svg>
-//               </div>
-//             )}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//     <div className="flex justify-center">
-//       <label
-//         htmlFor="imageupload"
-//         className="text-white mx-12 relative z-10  px-7 sm:text-lg sm:-mt-6 -mt-10 bg-[#75A48C] p-2 justify-center text-sm "
-
-//       >
-//         Upload Image
-//       </label>
-//     </div>
-//   </div>
-//   </div>
-//   )
-// }
-// <div className="flex h-auto w-[500px] bg-[#f5f6f7] border rounded-3xl relative p-6">
-//         <div
-//           className="absolute top-2 right-2 hover:cursor-pointer"
-//           onClick={handleUploadPic}
-//         >
-//           <svg
-//             xmlns="http://www.w3.org/2000/svg"
-//             viewBox="0 0 24 24"
-//             fill="currentColor"
-//             className="w-6 h-6"
-//           >
-//             <path
-//               fillRule="evenodd"
-//               d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
-//               clipRule="evenodd"
-//             />
-//           </svg>
-//         </div>
-//         <div className="  relative flex flex-col justify-center items-center w-full">
-//           {isTakingPhoto ? (
-//             <>
-//               <div className=" flex justify-end w-full  ">
-//                 <svg
-//                   xmlns="http://www.w3.org/2000/svg"
-//                   viewBox="0 0 24 24"
-//                   fill="currentColor"
-//                   className="w-6 h-6 hover:cursor-pointer"
-//                   onClick={handleInnerClose}
-//                 >
-//                   <path
-//                     fillRule="evenodd"
-//                     d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
-//                     clipRule="evenodd"
-//                   />
-//                 </svg>
-//               </div>
-//               <Webcam
-//                 audio={false}
-//                 ref={webcamRef}
-//                 screenshotFormat="image/jpeg"
-//                 videoConstraints={videoConstraints}
-//               />
-//               <button className="btn mt-4" onClick={capture}>
-//                 Capture
-//               </button>
-//             </>
-//           ) : (
-//             <>
-//               <button className="btn mb-4" onClick={handleTakePhoto}>
-//                 Take Image
-//               </button>
-//               <button className="btn mb-4" onClick={handleUpload}>
-//                 Upload Image
-//               </button>
-//             </>
-//           )}
-//           {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
-//         </div>
-//       </div>

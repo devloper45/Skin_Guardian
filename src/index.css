@@ -21,6 +21,30 @@
     @apply bg-[#ffffff];
   }
 }
+.skewed-div {
+  position: relative;
+  padding: 6px;
+}
+.skewed-div::before,
+.skewed-div::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background-color: inherit;
+  z-index: -1;
+}
+.skewed-div::before {
+  top: -13px;
+
+  transform: skewY(35deg); /* Skew the top border upwards */
+}
+.skewed-div::after {
+  bottom: -13px;
+  left: 0px;
+  transform: skewY(-35deg); /* Skew the bottom border downwards */
+}
 
 @layer utilities {
   /*  =================== sign up =================== */
@@ -28,7 +52,7 @@
     @apply bg-white  shadow-3xl xsm:w-full md:w-[80%] lg:w-[45%] w-full px-5 m-auto mt-4 rounded-xl py-3;
   }
   .carddd {
-    @apply bg-white shadow-3xl xsm:w-full md:w-[80%] lg:w-[55%] w-full px-5 m-auto mt-2 rounded-xl py-3;
+    @apply bg-white shadow-3xl xsm:w-full md:w-[80%] lg:w-[75%] w-full px-5 m-auto mt-2 rounded-xl py-3;
   }
   .sign-in-tag {
     @apply bg-white sm:p-3 p-2 rounded-xl flex justify-around items-center;
@@ -48,7 +72,7 @@
   .btn {
     @apply flex items-center justify-center m-auto sm:w-60 w-44 my-2 text-center bg-InputColor hover:bg-InputColorHover p-2 rounded-xl text-white font-medium text-lg;
   }
-  .border-b {
+  .border-bb {
     @apply border-b-2 w-20 md:w-28  mt-2 mb-2;
   }
   .error {
