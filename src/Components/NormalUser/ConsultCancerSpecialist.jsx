@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../Navbar";
 import Navbarr from "../Navbarr";
 import Appointement from "./Appointement";
+
 import Api from "../ProtectRoute/Api";
+import toast from "react-hot-toast";
 
 async function getDoctersListFromBackend(setDoctors) {
   try {
@@ -27,11 +29,20 @@ function handleDoctor(doctor, setDocter, setOpenAppointementModel) {
 const DoctorCard = ({ doctor, setDocter, setOpenAppointementModel }) => (
   <div className="bg-[#edf2f3] dark:bg-card rounded-lg shadow-xl p-4 flex justify-between items-start">
     <div className="flex items-center">
-      <img
-        src="https://placehold.co/100x100"
-        alt={doctor.firstName + " " + doctor.lastName}
-        className="rounded-full mr-4"
-      />
+      {doctor.profilePic ? (
+        <img
+          src={doctor.profilePic}
+          alt=""
+          srcset=""
+          className="rounded-full mr-4 h-36 w-36 object-cover "
+        />
+      ) : (
+        <img
+          src="https://placehold.co/100x100"
+          alt="Doctor Profile"
+          className="rounded-full mr-4 "
+        />
+      )}
       <div>
         <h2 className="text-lg font-bold">
           {"Dr. " + doctor.firstName} {doctor.lastName}
@@ -41,15 +52,15 @@ const DoctorCard = ({ doctor, setDocter, setOpenAppointementModel }) => (
           <br />
           {doctor.education.join(", ")}
         </p>
-        <p className="text-muted-foreground">
-          Experience: {doctor.experience || "N/A"} years | Satisfied Patients:{" "}
-          {doctor.satisfaction || "N/A"}
-        </p>
+
         <p className="font-semibold">Services: {doctor.services.join(", ")}</p>
       </div>
     </div>
     <div className="flex flex-col justify-between">
-      <button className="bg-secondary btn text-secondary-foreground hover:bg-secondary/80 mt-2">
+      <button
+        className="bg-secondary btn text-secondary-foreground hover:bg-secondary/80 mt-2"
+        onClick={() => toast("Feature Coming Soon!")}
+      >
         Video Consultation
       </button>
       <button

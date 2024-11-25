@@ -69,11 +69,20 @@ export default function Appointement({ setOpenAppointementModel, docter }) {
       >
         <div className="mx-auto p-6 bg-card rounded-lg shadow-md">
           <div className="flex items-center mb-4">
-            <img
-              src="https://placehold.co/100x100"
-              alt="Doctor Profile"
-              className="rounded-full mr-4"
-            />
+            {doctorr.profilePic ? (
+              <img
+                src={doctorr.profilePic}
+                alt=""
+                srcset=""
+                className="rounded-full mr-4 h-36 w-36 object-cover "
+              />
+            ) : (
+              <img
+                src="https://placehold.co/100x100"
+                alt="Doctor Profile"
+                className="rounded-full mr-4 "
+              />
+            )}
             <div>
               <h2 className="text-xl font-bold">
                 Dr. {doctorr.firstName} {doctorr.lastName}
@@ -82,11 +91,21 @@ export default function Appointement({ setOpenAppointementModel, docter }) {
                 Skin Guardian Video Consultation (Online)
               </p>
               <p className="text-primary">Fee: Rs. 1,500</p>
+              <p className="">
+                Contact No. :{" "}
+                <span className=" hover:underline text-primary ">
+                  {doctorr.phoneNumber}
+                </span>
+              </p>
+              <p className="">
+                Clinic Address :{" "}
+                <span className=" hover:underline text-primary ">
+                  {doctorr.clinicAddress}
+                </span>
+              </p>
             </div>
           </div>
-          <button className="bg-secondary text-secondary-foreground hover:bg-secondary/80 py-2 px-4 rounded">
-            Pay Online & Get 10% OFF
-          </button>
+          
 
           <div className="mt-6">
             <h3 className="text-lg font-semibold">Select Date</h3>
@@ -114,7 +133,7 @@ export default function Appointement({ setOpenAppointementModel, docter }) {
                   timeSlot.map((time, idx) => (
                     <button
                       key={idx}
-                      className="bg-orange-200 text-black py-2 rounded"
+                      className="bg-blue-200 text-black py-2 rounded"
                       onClick={() => handleApointment(time)}
                     >
                       {time}

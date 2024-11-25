@@ -17,9 +17,11 @@ import {
 } from "../../utils/util";
 import SideBar from "./SideBar";
 import Headers from "./Headers";
+import Api from "../ProtectRoute/Api";
 
 export default function DocterProfile() {
   const [openBar, setOpenBar] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [image, setImage] = useState();
   const [inputValue, setInputValue] = useState({
@@ -29,7 +31,9 @@ export default function DocterProfile() {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
-    specialization: [],
+    specialization: "",
+    clinicAddress: "",
+    fees: "",
     availableDays: [],
     availableTimeSlots: [],
     services: [],
@@ -42,22 +46,27 @@ export default function DocterProfile() {
   async function getProfile() {
     const token = localStorage.getItem("token");
     const doctorString = localStorage.getItem("doctor");
+
     try {
+      setLoading(true);
       const doctor = JSON.parse(doctorString);
-      const url = `${ApiBaseUrl}/doctor/${doctor.id}`;
-      const response = await fetch(url, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        // body: JSON.stringify(inputValue),
-      });
-      const data = await response.json();
-      setInputValue(data.data);
-    } catch {}
+
+      const url = `/personal/doctor/details/${doctor.id}`;
+
+      const response = await Api.get(url);
+      // const data = await response.json();
+      console.log("data : ", response.data.data.email);
+      setInputValue(response.data.data);
+      setLoading(false);
+    } catch {
+      console.log("from catch");
+      setLoading(false);
+    }
   }
 
-  // useEffect(() => {
-  //   getProfile();
-  // }, []);
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -65,45 +74,34 @@ export default function DocterProfile() {
   };
   const handleProfileUpdate = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    for (const key in inputValue) {
-      formData.append(key, inputValue[key]);
-    }
 
     try {
-      const response = await fetch(`${ApiBaseUrl}/personal/doctor`, {
-        method: "PUT",
-        body: formData,
-      });
+      setLoading(true);
+      const url = `/personal/doctor`;
+
+      // Create a copy of inputValue excluding profilePic
+      const { profilePic, id, email, ...dataToSend } = inputValue;
+      const {
+        specialization,
+        education,
+        updatedAt,
+        createdAt,
+        availableTimeSlots,
+        ...dataaToSend
+      } = dataToSend;
+
+      const response = await Api.put(url, dataaToSend);
 
       if (!response.ok) throw new Error("Update request failed");
+      setLoading(false);
       toast.success("Profile updated successfully");
     } catch (error) {
       console.error(error);
+      setLoading(false);
       toast.error("Failed to update profile.");
     }
   };
 
-  // const handleProfileUpdate = async (event) => {
-  //   event.preventDefault();
-  //   try {
-  //     const url = `${ApiBaseUrl}/personal/doctor`;
-  //     const response = await fetch(url, {
-  //       method: "PUT",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(inputValue),
-  //     });
-
-  //     if (!response.ok) throw new Error("Sign-up request failed");
-
-  //     const result = await response.json();
-  //     toast.success("Sign-up successful");
-  //     navigate("/Login");
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     // toast.error("An error occurred while signing up.");
-  //   }
-  // };
 
   const onTimeRangeChange = (time, timeString) => {
     setInputValue((prev) => ({
@@ -125,9 +123,27 @@ export default function DocterProfile() {
   const handleServiceChange = (value) => {
     setInputValue((prev) => ({ ...prev, services: value }));
   };
-  const handleImageChange = (event) => {
+  const handleImageChange = async(event) => {
     const file = event.target.files[0];
     setInputValue((prev) => ({ ...prev, profilePic: file }));
+    
+    try {
+      setLoading(true);
+      const url = `/personal/doctor/profile`;
+
+     
+
+      const response = await Api.patch(url, inputValue.profilePic);
+
+      if (!response.ok) throw new Error("Update request failed");
+      setLoading(false);
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+      toast.error("Failed to update profile.");
+    }
+    
   };
   return (
     <div className="flex flex-row w-full">
@@ -153,17 +169,17 @@ export default function DocterProfile() {
               <div className="flex flex-row bg-white rounded-md shadow-md">
                 <div className="flex md:h-[300px] md:m-5 md:w-72 justify-end items-end ">
                   <div className="text-center relative flex justify-center mb-16">
-                    <div className=" w-48 h-48 bg-red-400 relative rounded-full">
+                    <div className=" w-48 h-48 bg-gray-300 relative rounded-full">
                       <img
                         src={
                           inputValue.profilePic
-                            ? URL.createObjectURL(inputValue.profilePic)
-                            : "/default-avatar.png"
+                            ? inputValue.profilePic
+                            : "https://placehold.co/100x100"
                         }
                         alt="Profile"
                         className="w-full h-full object-cover rounded-full"
                       />
-                      uoload image
+                      upload image
                       <input
                         type="file"
                         accept="image/*"
@@ -223,6 +239,7 @@ export default function DocterProfile() {
                         placeholder="Enter Email"
                         value={inputValue.email}
                         onChange={onChangeHandler}
+                        disable
                       />
                       <InputField
                         label="Mobile No."
@@ -230,6 +247,22 @@ export default function DocterProfile() {
                         type="number"
                         placeholder="Enter Mobile Number"
                         value={inputValue.phoneNumber}
+                        onChange={onChangeHandler}
+                      />
+                      <InputField
+                        label="Clinic Address "
+                        name="clinicAddress"
+                        type="text"
+                        placeholder="Enter Clinic Address"
+                        value={inputValue.clinicAddress}
+                        onChange={onChangeHandler}
+                      />
+                      <InputField
+                        label="Doctor Fee "
+                        name="fees"
+                        type="text"
+                        placeholder="fees"
+                        value={inputValue.fees}
                         onChange={onChangeHandler}
                       />
 

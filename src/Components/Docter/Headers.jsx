@@ -41,7 +41,7 @@ const Headers = () => {
             <img
               src={doctor.profilePic}
               alt="Avatar"
-              className="rounded-full w-8 h-8"
+              className="rounded-full w-12 h-8"
             />
           ) : (
             <h1 className="font-bold text-2xl">

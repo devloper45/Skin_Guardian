@@ -1,9 +1,34 @@
 import React from "react";
 import Navbarr from "../Navbarr";
 import { useCart } from "../../context/CartContext";
+import Api from "../ProtectRoute/Api";
 
 export default function ShoppingCart() {
-  const { items, totalAmount, removeItemFromCart, clearCart } = useCart();
+  const { items, totalAmount, removeItemFromCart, addItemToCart, clearCart } =
+    useCart();
+
+  async function handleBuyNow() {
+    try {
+      const url = `/order`;
+      const payload = {
+        productsIds: items.map((item) => ({
+          id: item.id,
+          count: item.quantity,
+        })),
+        shippingAddress: "This is the test shipping address",
+      };
+
+      const response = await Api.post(url, payload);
+      const data = response.data;
+      console.log(data);
+      
+      if (response) {
+      }
+    } catch (error) {
+      console.error("Error while placing the order:", error);
+    }
+  }
+
   return (
     <div>
       <Navbarr />
@@ -42,6 +67,9 @@ export default function ShoppingCart() {
                         <button
                           type="button"
                           className="flex items-center justify-center w-5 h-5 bg-gray-400 outline-none rounded-full"
+                          onClick={() =>
+                            removeItemFromCart(item.id, item.price)
+                          }
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -60,6 +88,7 @@ export default function ShoppingCart() {
                         <button
                           type="button"
                           className="flex items-center justify-center w-5 h-5 bg-gray-400 outline-none rounded-full"
+                          onClick={() => addItemToCart(item.id, item.price)}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -80,17 +109,6 @@ export default function ShoppingCart() {
                     <div className="flex items-start gap-4 justify-end">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 cursor-pointer fill-gray-400 inline-block"
-                        viewBox="0 0 64 64"
-                      >
-                        <path
-                          d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                          data-original="#000000"
-                        ></path>
-                      </svg>
-
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
                         className="w-4 cursor-pointer fill-gray-400 hover:fill-red-400 inline-block"
                         viewBox="0 0 24 24"
                         onClick={() => removeItemFromCart(item.id, item.price)}
@@ -106,7 +124,7 @@ export default function ShoppingCart() {
                       </svg>
                     </div>
                     <h3 className="text-base font-bold text-gray-800 mt-auto">
-                      ${item.price}
+                      {item.price} Rs.
                     </h3>
                   </div>
                 </div>
@@ -118,25 +136,26 @@ export default function ShoppingCart() {
                 <li className="flex flex-wrap gap-4 text-sm">
                   Subtotal{" "}
                   <span className="ml-auto font-bold">
-                    ${totalAmount.toFixed(2)}
+                    {totalAmount.toFixed(2)} Rs.
                   </span>
                 </li>
                 <li className="flex flex-wrap gap-4 text-sm">
-                  Shipping <span className="ml-auto font-bold">$0</span>
+                  Shipping <span className="ml-auto font-bold">0 Rs.</span>
                 </li>
                 <li className="flex flex-wrap gap-4 text-sm">
-                  Tax <span className="ml-auto font-bold">$0</span>
+                  Tax <span className="ml-auto font-bold">0 Rs.</span>
                 </li>
                 <hr className="border-gray-300" />
                 <li className="flex flex-wrap gap-4 text-sm font-bold">
                   Total{" "}
-                  <span className="ml-auto">${totalAmount.toFixed(2)}</span>
+                  <span className="ml-auto">{totalAmount.toFixed(2)} Rs.</span>
                 </li>
               </ul>
 
               <div className="mt-8 space-y-2">
                 <button
                   type="button"
+                  onClick={handleBuyNow}
                   className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md"
                 >
                   Buy Now

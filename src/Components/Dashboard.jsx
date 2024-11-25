@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SideBarrr from "./SideBarrr";
 import { UserContext } from "../context/contextApi";
 import Dashboardbg from "../assets/bg.avif";
 import Navbarr from "./Navbarr";
+import toast from "react-hot-toast";
 
 // import UploadFileTemplate from "./UploadFileTemplate";
 // import logo from "../assets/logo.png";
@@ -104,7 +104,7 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center gap-6 md:gap-14 my-12 ">
               {/* Item 1 */}
               <div
-                onClick={() => alert("Feature Coming Soon!")}
+                onClick={() => toast("Feature Coming Soon!")}
                 className="mx-2 p-6 flex bg-[#77ccee] rounded-lg shadow-lg"
               >
                 <div>

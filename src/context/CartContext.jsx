@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from "react";
+import toast from "react-hot-toast";
 
 // Define the initial state of the cart
 const initialState = {
@@ -78,8 +79,11 @@ export function CartProvider({ children }) {
     localStorage.setItem("cartTotalAmount", state.totalAmount.toString());
   }, [state.items, state.totalAmount]);
 
-  const addItemToCart = (item) =>
+  const addItemToCart = (item) => {
     dispatch({ type: ACTIONS.ADD_ITEM, payload: item });
+    toast.success("Product Added Successfully ");
+  };
+
   const removeItemFromCart = (id, price) =>
     dispatch({ type: ACTIONS.REMOVE_ITEM, payload: { id, price } });
   const clearCart = () => {

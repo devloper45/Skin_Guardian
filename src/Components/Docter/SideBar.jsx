@@ -135,6 +135,7 @@ export default function SideBar({ openBar, setOpenBar }) {
   function handleOPenSidebar() {
     setOpenBar((prevState) => !prevState);
   }
+
   return (
     <div className=" fixed flex  h-screen">
       <div className=" border border-gray-100  h-screen">
@@ -164,11 +165,12 @@ export default function SideBar({ openBar, setOpenBar }) {
           </div>
           {/* support  */}
           <NavLink
-            to="/Support"
+            to="/loginDocter"
+            onClick={() => localStorage.clear()}
             className={({ isActive }) =>
               isActive
-                ? "text-white bg-custom-gradient  cursor-pointer rounded-lg flex m-2"
-                : " cursor-pointer rounded-lg flex hover:bg-secondaryGrey500 active:bg-blue-100 hover:text-primary m-2"
+                ? "text-white bg-custom-gradient ml-3 cursor-pointer rounded-lg flex m-2"
+                : " cursor-pointer rounded-lg flex ml-3  hover:bg-secondaryGrey500 active:bg-blue-100 hover:text-primary m-2"
             }
           >
             {/* support  */}
@@ -178,7 +180,7 @@ export default function SideBar({ openBar, setOpenBar }) {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6"
+              className="size-6 mt-2 mr-2"
             >
               <path
                 strokeLinecap="round"
@@ -187,7 +189,7 @@ export default function SideBar({ openBar, setOpenBar }) {
               />
             </svg>
 
-            {openBar && <span className="mt-2  text-lg">Log out</span>}
+            {openBar && <span className="mt-1  text-lg">Log out</span>}
           </NavLink>
         </div>
       </div>

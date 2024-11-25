@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/contextApi";
 import { useCart } from "../../context/CartContext";
 const SkinWellness = () => {
-  const [products, setProducts] = useState([]); // State to hold products data
+  const [products, setProducts] = useState([]); // State to hold products datacon
+  const [loading, setLoading] = useState(false); // State to hold loading status
 
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const SkinWellness = () => {
 
   const handleAddToCart = (product) => {
     // setCart([...cart, product]);
-    // navigate('/ShoppingCart')sett 
+    // navigate('/ShoppingCart')sett
     handleAddCart();
   };
   const handleBuyNow = (product) => {
@@ -30,21 +31,26 @@ const SkinWellness = () => {
 
   async function getProductsListFromBackend() {
     console.log("from product function");
+    setLoading(true);
     try {
       console.log("from try");
       const response = await Api.get("/product");
       console.log("from response");
 
       const productsList = response.data.data; // Accessing the data from the response
-      console.log(productsList);
-      setProducts(productsList); // Setting the products state with the fetched data
+      // Setting the products state with the fetched data
 
       if (response.status >= 200 && response.status < 300) {
+        console.log(productsList);
+        setProducts(productsList);
+        setLoading(false);
         console.log("Products fetched successfully!");
       } else {
         console.log("Failed to fetch products");
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       console.log("error", error);
     }
   }
@@ -104,11 +110,15 @@ const SkinWellness = () => {
           </p>
         </div>
 
-        <div className="text-center mb-4">
-          <p className="text-muted-foreground">
-            Showing {products.length} results
-          </p>
-        </div>
+        {loading ? (
+          <div className=" loader h-10 z-20 "></div>
+        ) : (
+          <div className="text-center mb-4">
+            <p className="text-muted-foreground">
+              Showing {products.length} results
+            </p>
+          </div>
+        )}
 
         {/* Products List */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">

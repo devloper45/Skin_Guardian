@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import {
   Disclosure,
   DisclosureButton,
@@ -15,11 +15,11 @@ import Logout from "./Accounts/Logout";
 import { UserContext } from "../context/contextApi";
 
 const navigation = [
-  { name: "Home", href: "/dashboard" },
-  { name: "Consultation", href: "/ConsultCancerDocter" },
-  { name: "Upload", href: "/UploadImage" },
-  { name: "Products", href: "/SkinProducts" },
-  {name : "Appointments",href:"/Appointments"},
+  { name: "Home", to: "/dashboard" },
+  { name: "Consultation", to: "/ConsultCancerDocter" },
+  { name: "Upload", to: "/UploadImage" },
+  { name: "Products", to: "/SkinProducts" },
+  { name: "Appointments", to: "/Appointments" },
 ];
 
 function classNames(...classes) {
@@ -29,7 +29,7 @@ function classNames(...classes) {
 export default function Navbarr() {
   const location = useLocation();
   const { cart, setCart } = useContext(UserContext);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Disclosure as="nav" className="bg-[#81cbd4]">
@@ -57,11 +57,11 @@ export default function Navbarr() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => {
-                  const isActive = location.pathname === item.href; // Check if this is the current page
+                  const isActive = location.pathname === item.to; // Check if this is the current page
                   return (
-                    <a
+                    <Link
                       key={item.name}
-                      href={item.href}
+                      to={item.to}
                       aria-current={isActive ? "page" : undefined}
                       className={classNames(
                         isActive
@@ -71,7 +71,7 @@ export default function Navbarr() {
                       )}
                     >
                       {item.name}
-                    </a>
+                    </Link>
                   );
                 })}
               </div>
@@ -94,7 +94,7 @@ export default function Navbarr() {
               >
                 <path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25ZM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" />
               </svg>
-              <span className="text-white">({cart})</span>
+              {/* <span className="text-white">({cart})</span> */}
             </div>
             <Menu as="div" className="relative ml-3">
               <div>
@@ -113,28 +113,28 @@ export default function Navbarr() {
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
                 <MenuItem>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Your Profile
-                  </a>
+                  </Link>
                 </MenuItem>
                 <MenuItem>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     Settings
-                  </a>
+                  </Link>
                 </MenuItem>
                 <MenuItem>
-                  <a
-                    href="#"
+                  <Link
+                    to="#"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                   >
                     <Logout />
-                  </a>
+                  </Link>
                 </MenuItem>
               </MenuItems>
             </Menu>
@@ -145,11 +145,11 @@ export default function Navbarr() {
       <DisclosurePanel className="sm:hidden">
         <div className="space-y-1 px-2 pb-3 pt-2">
           {navigation.map((item) => {
-            const isActive = location.pathname === item.href; // Check if this is the current page
+            const isActive = location.pathname === item.to; // Check if this is the current page
             return (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.to}
                 // aria-current={isActive ? "page" : undefined}
                 className={classNames(
                   isActive
@@ -159,7 +159,7 @@ export default function Navbarr() {
                 )}
               >
                 {item.name}
-              </a>
+              </Link>
             );
           })}
         </div>

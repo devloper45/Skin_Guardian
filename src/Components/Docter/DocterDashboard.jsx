@@ -53,6 +53,34 @@ export default function DoctorDashboard() {
     }
   }
 
+  async function handleAppointmentCompleted(appointmentId) {
+    try {
+      const response = await Api.put(
+        `/personal/doctor/appointments/${appointmentId}`,
+        {
+          status: "completed",
+        }
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log("Appointment completed successfully!", response.data);
+
+        // Update the local state to reflect the change
+        setAppointments((prevAppointments) =>
+          prevAppointments.map((appointment) =>
+            appointment.id === appointmentId
+              ? { ...appointment, status: "completed" }
+              : appointment
+          )
+        );
+      } else {
+        console.log("Failed to cancel appointment");
+      }
+    } catch (error) {
+      console.log("Error cancelling appointment:", error);
+    }
+  }
+
   useEffect(() => {
     handleDoctorAppointment();
   }, []);
@@ -124,19 +152,28 @@ export default function DoctorDashboard() {
                         <td className="px-6 py-4 text-gray-700">
                           {appointment.status}
                         </td>
-                        <td className="px-6 py-4 text-gray-700">
-                          <button className=" bg-green-500 text-white rounded-md p-2 mx-1 hover:bg-green-400 hover:underline hover:underline-offset-2">
-                            Approve
-                          </button>
-                          <button
-                            className=" bg-red-500 text-white rounded-md p-2 mx-1 hover:bg-red-400 hover:underline hover:underline-offset-2"
-                            onClick={() =>
-                              handleAppointmentCancel(appointment.id)
-                            }
-                          >
-                            Cancel
-                          </button>
-                        </td>
+                        {appointment.status == "scheduled" ? (
+                          <td className="px-6 py-4 text-gray-700 flex justify-center">
+                            <button
+                              onClick={() =>
+                                handleAppointmentCompleted(appointment.id)
+                              }
+                              className=" bg-green-500 text-white rounded-md p-2 mx-1 hover:bg-green-400 hover:underline hover:underline-offset-2"
+                            >
+                              Completed
+                            </button>
+                            <button
+                              className=" bg-red-500 text-white rounded-md p-2 mx-1 hover:bg-red-400 hover:underline hover:underline-offset-2"
+                              onClick={() =>
+                                handleAppointmentCancel(appointment.id)
+                              }
+                            >
+                              Cancel
+                            </button>
+                          </td>
+                        ) : (
+                          <></>
+                        )}
                       </tr>
                     ))
                   ) : (

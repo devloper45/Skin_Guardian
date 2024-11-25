@@ -41,6 +41,8 @@ function SignUpDocter() {
     password: "",
     confirmPassword: "",
     phoneNumber: "",
+    clinicAddress: "",
+    fees: "",
     specialization: [],
     availableDays: [],
     availableTimeSlots: [],
@@ -163,6 +165,22 @@ function SignUpDocter() {
               onChange={onChangeHandler}
               showPassword={showPassword}
               toggleShowPassword={toggleShowPassword}
+            />
+            <InputField
+              label="Clinic Address "
+              name="clinicAddress"
+              type="text"
+              placeholder="Enter Clinic Address"
+              value={inputValue.clinicAddress}
+              onChange={onChangeHandler}
+            />
+            <InputField
+              label="Doctor Fee "
+              name="fees"
+              type="text"
+              placeholder="fees"
+              value={inputValue.fees}
+              onChange={onChangeHandler}
             />
             <div>
               <label className="text-gray-800 text-sm mb-2 block">
