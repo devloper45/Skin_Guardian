@@ -10,7 +10,7 @@ export default function UploadImage() {
   const [image, setImage] = useState(null);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
   const [fileIsUploading, setFileIsUploading] = useState(false);
-  const [viewReport,setViewReport]=useState(false)
+  const [viewReport, setViewReport] = useState(false);
 
   const webcamRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -140,7 +140,7 @@ export default function UploadImage() {
       )}
       <div className="sm:mb-16 md:mb-10 lg:mb-1 p-4 py-6 justify-center">
         {AiResponse?.title ? (
-          <div className="absolute flex flex-col items-center justify-center bg-white w-full h-full z-20">
+          <div className="absolute flex flex-col items-center  justify-center bg-white w-full h-full z-20">
             <Result
               status={
                 AiResponse.title === "NON-INFECTED" ? "success" : "warning"
@@ -177,43 +177,34 @@ export default function UploadImage() {
                 <Button key="upload" onClick={() => setResponse("")}>
                   Upload Another
                 </Button>,
-              
               ]}
             />
-            <div className=" sm:w-2/3">
+            <div className=" sm:w-2/3 border p-5 shadow rounded-md">
               <div>
                 <h1 className="text-2xl text-center font-bold">Report</h1>
               </div>
-          
-         
-          <div className="flex justify-between ">
-            <div>
-            <h1>Cancer Type : {AiResponse.title}</h1>
-            <h1>Report ID : {AiResponse.id}</h1>
 
+              <div className="flex justify-between ">
+                <div>
+                  <h1>Cancer Type : {AiResponse.title}</h1>
+                  <h1>Report ID : {AiResponse.id}</h1>
+                </div>
+                <Progress type="circle" percent={AiResponse.percentage} />
+              </div>
+              <p className="   w-full ">
+                {`Our analysis indicates signs of a potential skin condition called  ${AiResponse.title}.  we strongly recommend consulting with a dermatologist or Skin Cancer specialist for a comprehensive evaluation and appropriate treatment. Early detection and professional guidance are key to managing skin health effectively.`}
+              </p>
+              <p>{AiResponse.description}</p>
+              <p className=" text-red-500">
+                Attention : This is an AI Generated report. Always Consult
+                Docter before taking any meditation
+              </p>
             </div>
-            <Progress type="circle" percent={AiResponse.percentage} />
-
-     
-
-
-          </div>
-          <p className="   w-full mx-4">
-            {`Our analysis indicates signs of a potential skin condition called ${AiResponse.title}.  we strongly recommend consulting with a dermatologist or Skin Cancer specialist for a comprehensive evaluation and appropriate treatment. Early detection and professional guidance are key to managing skin health effectively.`}
-          </p>
-          <p>
-            {AiResponse.description}
-          </p>
-          <p className=" text-red-500">Attention : This is an AI Generated report. Always Consult Docter before taking any meditation</p>
-
-
-        </div>
           </div>
         ) : (
           ""
         )}
 
-        
         <div className="flex flex-col items-center m-3 text-center">
           <h1 className="bold text-4xl m-3">SkinGuardian</h1>
           <p className="text-xl">

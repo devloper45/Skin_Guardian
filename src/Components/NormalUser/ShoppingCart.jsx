@@ -21,7 +21,7 @@ export default function ShoppingCart() {
       const response = await Api.post(url, payload);
       const data = response.data;
       console.log(data);
-      
+
       if (response) {
       }
     } catch (error) {
@@ -64,7 +64,7 @@ export default function ShoppingCart() {
                       </div>
 
                       <div className="mt-auto flex items-center gap-3">
-                        <button
+                        {/* <button
                           type="button"
                           className="flex items-center justify-center w-5 h-5 bg-gray-400 outline-none rounded-full"
                           onClick={() =>
@@ -81,11 +81,12 @@ export default function ShoppingCart() {
                               data-original="#000000"
                             ></path>
                           </svg>
-                        </button>
+                        </button> */}
+                        <h1>Quantity : </h1>
                         <span className="font-bold text-sm leading-[18px]">
                           {item.quantity}
                         </span>
-                        <button
+                        {/* <button
                           type="button"
                           className="flex items-center justify-center w-5 h-5 bg-gray-400 outline-none rounded-full"
                           onClick={() => addItemToCart(item.id, item.price)}
@@ -100,7 +101,7 @@ export default function ShoppingCart() {
                               data-original="#000000"
                             ></path>
                           </svg>
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
