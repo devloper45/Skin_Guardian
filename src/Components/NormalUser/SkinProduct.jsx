@@ -1,16 +1,14 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import Api from "../ProtectRoute/Api";
-import Navbarr from "../Navbarr";
-import FeatureProducts from "../../utils/FeatureProducts";
-import { UserContext } from "../../context/contextApi";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import FeatureProducts from "../../utils/FeatureProducts";
+import Navbarr from "../Navbarr";
+import Api from "../ProtectRoute/Api";
 
 export default function Product() {
   const { id } = useParams(); // Accessing the product ID from the URL
   const [productData, setProduct] = useState(null);
   const navigate = useNavigate();
-  const { cart, setCart, handleAddCart } = useContext(UserContext);
   const { addItemToCart } = useCart();
 
   useEffect(() => {
@@ -60,7 +58,7 @@ export default function Product() {
           <img
             src={productData.imageUrl}
             alt={productData.name}
-            className="w-full h-[500px] rounded-lg"
+            className="w-full h-[500px] rounded-lg object-contain"
           />
         </div>
 
@@ -68,17 +66,17 @@ export default function Product() {
           <h2 className="text-2xl font-bold text-foreground">
             {productData.name}
           </h2>
-          <p className="text-muted-foreground">{productData.category}</p>
-          <div className="flex items-center my-2">
+          <p className="text-muted-foreground my-2">{productData.category}</p>
+          {/* <div className="flex items-center my-2">
             <span className="text-yellow-500">★★★★☆</span>
             <span className="text-muted-foreground ml-2">(4 ratings)</span>
-          </div>
+          </div> */}
           <p className="text-muted-foreground mb-4">
             {productData.description}
           </p>
-          <a href="#" className="text-primary underline">
+          {/* <a href="#" className="text-primary underline">
             Read full description
-          </a>
+          </a> */}
 
           <div className="mt-4">
             <h3 className="text-lg font-semibold text-foreground">
@@ -100,9 +98,9 @@ export default function Product() {
             <button
               className="btn !w-full text-secondary-foreground hover:bg-secondary/80 py-2 px-4 rounded-lg "
               // onClick={handleAddCart}
-              onClick={()=>addItemToCart(productData)}
+              onClick={() => addItemToCart(productData)}
             >
-              ADD TO BOX - {productData.price} Pkr
+              Add to cart {productData.price} Pkr
             </button>
           </div>
           {/* <div className="mt-4">

@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Api from "../Components/ProtectRoute/Api";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 export default function FeatureProducts() {
   const [products, setProducts] = useState([]); // State to hold products data
 
+  const { addItemToCart } = useCart();
+
+  const handleBuyNow = () => {
+    navigate("/ShoppingCart");
+  };
   async function getProductsListFromBackend() {
     console.log("from product function");
     try {
@@ -13,7 +19,6 @@ export default function FeatureProducts() {
       console.log("from response");
 
       const productsList = response.data.data; // Accessing the data from the response
-      console.log(productsList);
       setProducts(productsList); // Setting the products state with the fetched data
 
       if (response.status >= 200 && response.status < 300) {
@@ -25,6 +30,16 @@ export default function FeatureProducts() {
       console.log("error", error);
     }
   }
+
+  const navigate = useNavigate();
+
+  function handleProduct(id) {
+    navigate(`/skinproduct/${id}`);
+  }
+
+  // const handleBuyNow = () => {
+  //   navigate("/ShoppingCart");
+  // };
 
   useEffect(() => {
     getProductsListFromBackend();
@@ -41,7 +56,7 @@ export default function FeatureProducts() {
               <img
                 src={product.imageUrl}
                 alt={product.name}
-                className="w-full h-48 object-cover rounded-lg mb-2"
+                className="w-full h-48 object-contain rounded-lg mb-2"
               />
               <h2 className="text-lg font-semibold">{product.name}</h2>
               <p className="text-muted-foreground">
@@ -52,13 +67,16 @@ export default function FeatureProducts() {
             <div className="flex justify-between mt-2">
               <button
                 className="bg-primary text-white hover:bg-primary/80 p-2 rounded"
-                onClick={() => handleAddToCart(product)}
+                onClick={() => {
+                  addItemToCart(product);
+                  handleBuyNow(product);
+                }}
               >
                 Buy Now
               </button>
               <button
                 className="bg-primary  text-white hover:bg-primary/80 p-2 rounded"
-                onClick={() => handleAddToCart(product)}
+                onClick={() => addItemToCart(product)}
               >
                 Add to Cart
               </button>
