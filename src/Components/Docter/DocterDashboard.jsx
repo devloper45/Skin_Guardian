@@ -165,6 +165,7 @@ export default function DoctorDashboard() {
                             <button
                               className=" bg-red-500 text-white rounded-md p-2 mx-1 hover:bg-red-400 hover:underline hover:underline-offset-2"
                               onClick={() =>
+                                
                                 handleAppointmentCancel(appointment.id)
                               }
                             >
