@@ -1,32 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navbarr from "../Navbarr";
 import Api from "../ProtectRoute/Api";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../context/contextApi";
 import { useCart } from "../../context/CartContext";
 const SkinWellness = () => {
   const [products, setProducts] = useState([]); // State to hold products datacon
   const [loading, setLoading] = useState(false); // State to hold loading status
 
-  const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
-  const { cart, setCart, handleAddCart } = useContext(UserContext);
   const { addItemToCart } = useCart();
 
-  const handleAddToCart = (product) => {
-    // setCart([...cart, product]);
-    // navigate('/ShoppingCart')sett
-    handleAddCart();
-  };
-  const handleBuyNow = (product) => {
-    // setCart([...cart, product]);
-    handleAddCart();
+  const handleBuyNow = () => {
     navigate("/ShoppingCart");
-  };
-
-  const handleNotifyMe = (product) => {
-    setNotifications([...notifications, product.name]);
-    alert(`You will be notified when ${product.name} is available!`);
   };
 
   async function getProductsListFromBackend() {
