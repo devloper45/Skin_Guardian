@@ -2,6 +2,7 @@ import axios from "axios";
 import { ApiBaseUrl } from "../../utils/util";
 
 const getToken = () => localStorage.getItem("userID");
+const getToken = () => localStorage.getItem("userID");
 
 const Api = axios.create({
   baseURL: ApiBaseUrl,
