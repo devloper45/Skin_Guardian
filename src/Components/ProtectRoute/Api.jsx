@@ -1,7 +1,7 @@
+
 import axios from "axios";
 import { ApiBaseUrl } from "../../utils/util";
 
-const getToken = () => localStorage.getItem("userID");
 const getToken = () => localStorage.getItem("userID");
 
 const Api = axios.create({
@@ -25,7 +25,7 @@ Api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       console.error("Token expired or unauthorized. Redirecting to login...");
       localStorage.removeItem("userID");
-      window.location.href = "/login";
+      window.location.href = "/login"; 
     }
     return Promise.reject(error);
   }
