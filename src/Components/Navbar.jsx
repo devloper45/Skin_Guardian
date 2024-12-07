@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import logo from "../assets/logo.png";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import logo from "../assets/logo.png";
 import Logout from "./Accounts/Logout";
 
 const Navbar = () => {
@@ -46,7 +45,7 @@ const Navbar = () => {
   return (
     <>
       <div className="flex bg-[#5d6ae0d8] p-3  justify-between">
-        <div onClick={() => navigate("/")} className="flex">
+        <div onClick={() => navigate("/")} className="flex cursor-pointer">
           <img src={logo} className="h-7 w-7 m-2" alt="Logo" />
           <h1 className="font-bold text-base sm:text-2xl text-white m-1">
             Skin-Guardian
@@ -54,7 +53,7 @@ const Navbar = () => {
         </div>
         <div>
           <ul className="flex justify-between text-white">
-            <li>
+            {/* <li>
               <button
                 className="m-1 p-1 cursor-pointer z-20"
                 onClick={() => navigateAndCloseDropdown("/Product")}
@@ -69,7 +68,7 @@ const Navbar = () => {
               >
                 Pricing
               </button>
-            </li>
+            </li> */}
             <li>
               <img
                 onClick={dropdownHandler}
