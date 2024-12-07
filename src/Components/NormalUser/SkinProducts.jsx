@@ -131,7 +131,7 @@ const SkinWellness = () => {
                 <img
                   src={product.imageUrl}
                   alt={product.name}
-                  className="w-full h-48 object-cover rounded-lg mb-2"
+                  className="w-full h-48 object-contain rounded-lg mb-2"
                 />
                 <h2 className="text-lg font-semibold">{product.name}</h2>
                 <p className="text-muted-foreground">
@@ -142,7 +142,10 @@ const SkinWellness = () => {
               <div className="flex justify-between mt-2">
                 <button
                   className="bg-primary text-white hover:bg-primary/80 p-2 rounded"
-                  onClick={() => handleBuyNow(product)}
+                  onClick={() => {
+                    addItemToCart(product);
+                    handleBuyNow(product);
+                  }}
                 >
                   Buy Now
                 </button>
