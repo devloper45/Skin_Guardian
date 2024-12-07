@@ -1,11 +1,13 @@
-import React from "react";
 import Navbarr from "../Navbarr";
 import { useCart } from "../../context/CartContext";
 import Api from "../ProtectRoute/Api";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export default function ShoppingCart() {
-  const { items, totalAmount, removeItemFromCart, addItemToCart, clearCart } =
-    useCart();
+  const { items, totalAmount, removeItemFromCart, clearCart } = useCart();
+
+  const nav = useNavigate();
 
   async function handleBuyNow() {
     try {
@@ -22,7 +24,12 @@ export default function ShoppingCart() {
       const data = response.data;
       console.log(data);
 
-      if (response) {
+      if (data) {
+        toast(data.message, {
+          type: "success",
+        });
+        nav("/SkinProducts");
+        clearCart();
       }
     } catch (error) {
       console.error("Error while placing the order:", error);
@@ -41,8 +48,11 @@ export default function ShoppingCart() {
           <h1 className="text-2xl font-extrabold text-gray-800">Your Cart</h1>
           <div className="grid md:grid-cols-3 gap-4 mt-8">
             <div className="md:col-span-2 space-y-4">
-              {items.map((item) => (
-                <div className="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+              {items.map((item, i) => (
+                <div
+                  key={i}
+                  className="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]"
+                >
                   <div className="flex gap-4">
                     <div className="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
                       <img
@@ -161,15 +171,9 @@ export default function ShoppingCart() {
                 >
                   Buy Now
                 </button>
-                <button
-                  type="button"
-                  className="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-md"
-                >
-                  Continue Shopping{" "}
-                </button>
               </div>
 
-              <div className="mt-4 flex flex-wrap justify-center gap-4">
+              {/* <div className="mt-4 flex flex-wrap justify-center gap-4">
                 <img
                   src="https://readymadeui.com/images/master.webp"
                   alt="card1"
@@ -185,7 +189,7 @@ export default function ShoppingCart() {
                   alt="card3"
                   className="w-10 object-contain"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

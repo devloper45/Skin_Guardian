@@ -1,12 +1,12 @@
 // Active and Recent Appointments
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbarr from "../Navbarr";
 import Api from "../ProtectRoute/Api";
+import toast from "react-hot-toast";
 
 export default function AHAppointments() {
   const [activeAppointments, setActiveAppointments] = useState([]);
-  const [recentAppointments, setRecentAppointments] = useState([]);
 
   async function handleActiveAppointments() {
     try {
@@ -18,27 +18,31 @@ export default function AHAppointments() {
     }
   }
 
-  async function handleRecentAppointments() {
-    try {
-      const response = await Api.get(`/appointment/recent`);
-      setRecentAppointments(response.data); // Assuming data is an array of recent appointments
-    } catch (error) {
-      console.error("Error fetching recent appointments:", error);
-    }
-  }
+  // async function handleRecentAppointments() {
+  //   try {
+  //     const response = await Api.get(`/appointment/recent`);
+  //     setRecentAppointments(response.data); // Assuming data is an array of recent appointments
+  //   } catch (error) {
+  //     console.error("Error fetching recent appointments:", error);
+  //   }
+  // }
 
   useEffect(() => {
     handleActiveAppointments();
-    handleRecentAppointments();
+    // handleRecentAppointments();
   }, []);
   async function handleAppointmentStatus(appointmentId) {
     try {
       await Api.delete(`/appointment/${appointmentId}`);
+      // console.log(res.data, "aer");
+
       console.log(`Appointment ${appointmentId} status updated`);
 
       handleActiveAppointments();
-      handleRecentAppointments();
+      // handleRecentAppointments();
     } catch (error) {
+      toast("Error occured while changing the status", { type: "error" });
+
       console.error(
         `Error updating appointment ${appointmentId} status:`,
         error
@@ -55,7 +59,7 @@ export default function AHAppointments() {
               Appointments Dashboard
             </h1>
             <p className="text-lg text-muted-foreground mt-4">
-              Manage your active and recent appointments.
+              Manage your appointments.
             </p>
           </div>
         </header>
@@ -111,45 +115,6 @@ export default function AHAppointments() {
                       className="px-4 py-2 text-center text-red-500"
                     >
                       No active appointments.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="p-8">
-          <h2 className="text-2xl font-semibold mb-4">Recent Appointments</h2>
-          <div className="overflow-x-auto">
-            <table className="table-auto w-full border border-gray-300">
-              <thead>
-                <tr className="bg-gray-200">
-                  <th className="px-4 py-2">Doctor</th>
-                  <th className="px-4 py-2">Date</th>
-                  <th className="px-4 py-2">Time</th>
-                  <th className="px-4 py-2">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentAppointments.length > 0 ? (
-                  recentAppointments.map((appointment, index) => (
-                    <tr key={index} className="text-center">
-                      <td className="px-4 py-2">{appointment.doctorName}</td>
-                      <td className="px-4 py-2">{appointment.date}</td>
-                      <td className="px-4 py-2">{appointment.time}</td>
-                      <td className="px-4 py-2 text-gray-500">
-                        {appointment.status}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan="4"
-                      className="px-4 py-2 text-center text-red-500"
-                    >
-                      No recent appointments.
                     </td>
                   </tr>
                 )}
