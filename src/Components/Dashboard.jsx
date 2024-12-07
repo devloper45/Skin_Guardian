@@ -1,16 +1,14 @@
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/contextApi";
-import Dashboardbg from "../assets/bg.avif";
 import Navbarr from "./Navbarr";
-import toast from "react-hot-toast";
 
 // import UploadFileTemplate from "./UploadFileTemplate";
 // import logo from "../assets/logo.png";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [openModel, setOpenModel] = useState(false);
   const { userRole } = useContext(UserContext);
   console.log("user role in dashboard is " + userRole);
 
@@ -19,38 +17,6 @@ export default function Dashboard() {
     navigate(path);
   }
 
-  async function handlePremium() {
-    const stripeid = localStorage.getItem("stripeid");
-    try {
-      const premiumResponse = await fetch(
-        `http://127.0.0.1:8000/stripe-checkout/${stripeid}/`,
-        {
-          method: "GET",
-        }
-      );
-
-      if (!premiumResponse.ok) {
-        throw new Error("Premium subscription request failed");
-      } else {
-        localStorage.setItem("userRole", false);
-      }
-      console.log(premiumResponse);
-
-      const result2 = await premiumResponse.json();
-
-      if (!result2?.url) {
-        toast.error("Error in stripe checkout");
-      }
-
-      console.log("Premium subscription successful:", result2);
-      alert("Check your email for confirmation and premium benefits.");
-      window.location = result2.url;
-    } catch (error) {
-      console.error("Error with premium subscription:", error);
-      alert("An error occurred with premium subscription.");
-    }
-  }
-  console.log(openModel);
   return (
     <>
       <Navbarr />
@@ -67,17 +33,17 @@ export default function Dashboard() {
                 </h1>
                 <p className="mb-8 text-lg  mt-12 font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
                   Upload your photo for an AI-based analysis. Our system will
-                  check for signs of skin cancer. If you're clear, we'll
-                  recommend top skin wellness products. If there's a concern,
-                  you'll be directed to consult with one of our skin cancer
-                  specialists.
+                  check for signs of skin cancer. If you&apos;re clear,
+                  we&apos;ll recommend top skin wellness products. If
+                  there&apos;s a concern, you&apos;ll be directed to consult
+                  with one of our skin cancer specialists.
                 </p>
-                <button
+                {/* <button
                   onClick={handlePremium}
                   className=" py-2 px-4 border rounded-full mt-9 mb-5 "
                 >
                   Upgrade to Premium
-                </button>
+                </button> */}
               </div>
             </section>
 
@@ -104,16 +70,15 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center gap-6 md:gap-14 my-12 ">
               {/* Item 1 */}
               <div
-                onClick={() => toast("Feature Coming Soon!")}
-                className="mx-2 p-6 flex bg-[#77ccee] rounded-lg shadow-lg"
+                onClick={() => handleTemplate("/SkinProducts")}
+                className="mx-2 cursor-pointer p-6 flex bg-[#77ccee] rounded-lg shadow-lg"
               >
                 <div>
                   <h3 className=" text-lg sm:text-xl font-semibold mb-2">
-                    Consult Dermatologist
+                    Buy Prodcuts
                   </h3>
                   <p className="text-muted-foreground">
-                    Take Consultation from Professional Dermatologist regarding
-                    your Skin Wellness
+                    Take Care of your Skin with out products.
                   </p>
                 </div>
                 <div className=" flex flex-col justify-center ml-2 items-center ">
@@ -169,7 +134,7 @@ export default function Dashboard() {
               {/* Item 3 */}
               <div
                 onClick={() => handleTemplate("/ConsultCancerDocter")}
-                className="mx-2 p-6 flex bg-[#77ccee] rounded-lg shadow-lg"
+                className="mx-2 p-6 cursor-pointer flex bg-[#77ccee] rounded-lg shadow-lg"
               >
                 <div>
                   <h3 className=" text-lg sm:text-xl font-semibold mb-2">
