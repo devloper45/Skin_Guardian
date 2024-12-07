@@ -224,12 +224,12 @@ function Login() {
                     </a>
                   </p>
                   <p className="text-gray-800 text-sm !mt-8 text-center">
-                    <a
-                      href="/loginDocter"
+                    <Link
+                      to="/loginDocter"
                       className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
                     >
                       Login As a Doctor
-                    </a>
+                    </Link>
                   </p>
                 </form>
               </div>
