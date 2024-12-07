@@ -5,14 +5,12 @@ import Login from "./Components/Accounts/Login";
 import Forgotpassword from "./Components/Accounts/Forgopassword";
 import Resetpassword from "./Components/Accounts/Resetpassword";
 
-import Protect from "./Components/ProtectRoute/Protect";
 import LandingPage from "./Components/LandingPage";
 
 import Pricing from "./Components/Pricing";
 
 import { UserProvider } from "./context/contextApi.jsx";
 
-import Auth from "./Components/ProtectRoute/auth.jsx";
 import ConsultDermatologist from "./Components/NormalUser/ConsultDermatologist.jsx";
 import ConsultCancerSpecialist from "./Components/NormalUser/ConsultCancerSpecialist.jsx";
 import MyProduct from "./Components/Product";
