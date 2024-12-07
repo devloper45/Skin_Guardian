@@ -3,19 +3,24 @@
 import { useEffect, useState } from "react";
 import Navbarr from "../Navbarr";
 import Api from "../ProtectRoute/Api";
-import toast from "react-hot-toast";
+import toast, { LoaderIcon } from "react-hot-toast";
 
 export default function AHAppointments() {
   const [activeAppointments, setActiveAppointments] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   async function handleActiveAppointments() {
     try {
+      setLoading(true);
       const response = await Api.get(`/appointment`);
       console.log(response.data.data);
       setActiveAppointments(response.data.data); // Assuming data is an array of active appointments
     } catch (error) {
       console.error("Error fetching active appointments:", error);
     }
+
+    setLoading(false);
   }
 
   // async function handleRecentAppointments() {
@@ -110,11 +115,17 @@ export default function AHAppointments() {
                   ))
                 ) : (
                   <tr>
-                    <td
-                      colSpan="4"
-                      className="px-4 py-2 text-center text-red-500"
-                    >
-                      No active appointments.
+                    <td colSpan="4" className="flex w-full justify-center">
+                      {loading ? (
+                        <div className="my-4">
+                          <LoaderIcon className="h-6 w-6" />
+                        </div>
+                      ) : (
+                        // "...Loading"
+                        <p className="px-4 py-2 text-center text-red-500">
+                          No active appointments.
+                        </p>
+                      )}
                     </td>
                   </tr>
                 )}

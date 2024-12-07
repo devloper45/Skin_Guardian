@@ -1,5 +1,3 @@
-import React, { useEffect, useContext, useState } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
 import {
   Disclosure,
   DisclosureButton,
@@ -9,10 +7,12 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/contextApi";
 import logo from "./../assets/logo.png";
 import Logout from "./Accounts/Logout";
-import { UserContext } from "../context/contextApi";
 
 const navigation = [
   { name: "Home", to: "/dashboard" },
@@ -112,7 +112,7 @@ export default function Navbarr() {
                 transition
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
-                <MenuItem>
+                {/* <MenuItem>
                   <Link
                     to="#"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
@@ -127,7 +127,7 @@ export default function Navbarr() {
                   >
                     Settings
                   </Link>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem>
                   <Link
                     to="#"
