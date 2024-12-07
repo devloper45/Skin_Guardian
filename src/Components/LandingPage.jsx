@@ -1,8 +1,3 @@
-import React from "react";
-
-import bgImage from "../assets/bg.png";
-import VectorHome from "../assets/vectorhome.png";
-
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 
@@ -15,8 +10,6 @@ const LandingPage = () => {
         <Navbar />
         <div className=" h-[90vh] ">
           <div className="bg-white  min-h-screen ">
-        
-                        
             <div className="lg:min-h-[560px] bg-blue-100 px-4 sm:px-10">
               <div className="max-w-7xl w-full mx-auto py-16">
                 <div className="grid lg:grid-cols-2 justify-center items-center gap-10">
@@ -25,10 +18,14 @@ const LandingPage = () => {
                       AI-powered Skin Cancer Detection
                     </h1>
                     <p className="text-base leading-relaxed">
-                      Upload a picture of your skin, and our AI will analyze it for signs of skin cancer. Get instant results and personalized recommendations.
+                      Upload a picture of your skin, and our AI will analyze it
+                      for signs of skin cancer. Get instant results and
+                      personalized recommendations.
                     </p>
-                    <div className="flex flex-wrap gap-y-4 gap-x-8 mt-8"
-                    onClick={()=>navigate("/login")}>
+                    <div
+                      className="flex flex-wrap gap-y-4 gap-x-8 mt-8"
+                      onClick={() => navigate("/login")}
+                    >
                       <button className="bg-black hover:bg-[#222] text-white flex items-center transition-all font-semibold rounded-md px-5 py-4">
                         Get started
                         <svg
@@ -68,8 +65,6 @@ const LandingPage = () => {
               </div>
             </div>
 
-            
-
             <div className="px-4 sm:px-10 mt-28">
               <div className="max-w-7xl w-full mx-auto">
                 <div className="grid md:grid-cols-2 items-center gap-10">
@@ -85,7 +80,9 @@ const LandingPage = () => {
                       Why Choose Our Platform?
                     </h2>
                     <p>
-                 Get personalized skin care recommendations based on AI analysis. Whether you need medical consultation or daily skin care solutions, we are here to help.
+                      Get personalized skin care recommendations based on AI
+                      analysis. Whether you need medical consultation or daily
+                      skin care solutions, we are here to help.
                     </p>
 
                     <div className="mt-8">
@@ -95,14 +92,18 @@ const LandingPage = () => {
                           className="w-12 h-12 rounded-full"
                         />
                         <div className="ml-4">
-                          <h4 className="font-semibold text-base">John Doe</h4>
+                          <h4 className="font-semibold text-base">Zain</h4>
                         </div>
                       </div>
                       <div className="mt-4">
                         <p>
-                          Veniam proident aute magna anim excepteur et ex
-                          consectetur velit ullamco veniam minim aute sit. Elit
-                          occaecat officia et laboris Lorem minim.
+                          I had an amazing experience with their service. I
+                          recently ordered a variety of products from them, and
+                          I have to say, all of them exceeded my expectations.
+                          The quality of each item was outstanding, and the
+                          delivery was prompt. I&apos;m thoroughly impressed
+                          with their attention to detail and the overall
+                          customer experience.
                         </p>
                       </div>
                     </div>
@@ -111,7 +112,7 @@ const LandingPage = () => {
               </div>
             </div>
 
-            <div className="px-4 sm:px-10 mt-28">
+            {/* <div className="px-4 sm:px-10 mt-28">
               <div className="max-w-7xl w-full mx-auto grid md:grid-cols-2 justify-center items-center gap-10">
                 <div>
                   <h2 className="md:text-4xl text-3xl font-semibold mb-6">
@@ -145,9 +146,9 @@ const LandingPage = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="mt-28 px-4 sm:px-10 bg-blue-100">
+            {/* <div className="mt-28 px-4 sm:px-10 bg-blue-100">
               <div className="min-h-[400px] relative h-full max-w-2xl mx-auto flex flex-col justify-center items-center text-center px-6 py-16">
                 <h2 className="md:text-4xl text-3xl font-semibold mb-6">
                   Your work, everywhere you are
@@ -172,9 +173,9 @@ const LandingPage = () => {
                   </svg>
                 </button>
               </div>
-            </div>
+            </div> */}
 
-            <div className="px-4 sm:px-10 mt-28">
+            {/* <div className="px-4 sm:px-10 mt-28">
               <div className="max-w-7xl w-full mx-auto">
                 <div className="grid md:grid-cols-3 gap-4">
                   <div className="col-span-2">
@@ -411,9 +412,9 @@ const LandingPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="mt-28 px-4 sm:px-10">
+            {/* <div className="mt-28 px-4 sm:px-10">
               <div className="max-w-7xl mx-auto space-y-6">
                 <div className="mb-10">
                   <h2 className="md:text-4xl text-3xl font-semibold mb-6">
@@ -579,9 +580,9 @@ const LandingPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="mt-28 px-4 sm:px-10">
+            {/* <div className="mt-28 px-4 sm:px-10">
               <div className="max-w-7xl mx-auto bg-gradient-to-r from-teal-700 via-teal-600 to-teal-700 py-16 px-6 relative">
                 <div className="max-w-2xl mx-auto text-center">
                   <h2 className="md:text-4xl text-3xl font-semibold mb-6 text-white">
@@ -606,10 +607,10 @@ const LandingPage = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <footer className="mt-28">
-              <div className="px-4 sm:px-10">
+            <footer className="mt-28 mb-5">
+              {/* <div className="px-4 sm:px-10">
                 <div className="grid max-sm:grid-cols-1 max-xl:grid-cols-2 xl:grid-cols-5 gap-8 max-w-7xl mx-auto">
                   <div className="xl:col-span-2">
                     <h1 className="text-4xl font-bold mb-3">Skin Guardian</h1>
@@ -865,17 +866,17 @@ const LandingPage = () => {
                     </ul>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <hr className="my-6" />
-              <p className="text-center mb-6">
+              <p className="text-center my-6">
                 © 2023
                 <a
                   href="https://readymadeui.com/"
                   target="_blank"
                   className="hover:underline mx-1"
                 >
-                  ReadymadeUI
+                  SkinGuardian
                 </a>
                 All Rights Reserved.
               </p>
